@@ -1,9 +1,11 @@
 import React from 'react';
+import { ItemsPage } from './pages/ItemsPage';
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
-      App
+      Collections
+      <ItemsPage />
     </div>
   );
 }
