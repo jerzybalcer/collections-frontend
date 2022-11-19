@@ -1,11 +1,11 @@
 import React from 'react';
-import { ItemsPage } from './pages/ItemsPage';
 import { Box } from '@mantine/core';
+import { ItemsPage } from './pages';
 
 const App: React.FC = () => {
   return (
     <Box>
-          <ItemsPage/>
+      <ItemsPage/>
     </Box>
     
   );

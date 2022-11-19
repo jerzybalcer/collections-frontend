@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { SimpleItem } from '../model/Item';
-import { Table, Button, Flex, Box, Drawer, TextInput, Textarea, Checkbox } from '@mantine/core';
 import dayjs from "dayjs";
+import { Table, Button, Flex, Box, Drawer, TextInput, Textarea, Checkbox } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
+import { SimpleItem } from '../model';
 
 interface NewItem {
     name: string;

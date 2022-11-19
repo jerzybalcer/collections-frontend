@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { UserItemsList } from '../components/UserItemsList';
-import { SimpleItem } from '../model/Item';
+import { UserItemsList } from '../components/';
+import { SimpleItem } from '../model';
 
 export const ItemsPage: React.FC = () => {
     const [items, setItems] = useState<SimpleItem[] | undefined>(undefined);
