@@ -19,7 +19,7 @@ export const ItemsPage: React.FC = () => {
     } = useQuery('items', getUserItems);
 
     return (
-        <Box mt="6rem" mx="10%" h="100%">
+        <Box mx="10%" h="100%">
             <ItemAdder
                 isOpen={isAddDrawerOpen}
                 setIsOpen={setIsAddDrawerOpen}
