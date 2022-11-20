@@ -25,7 +25,7 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({ items }) => {
                     <tr
                         key={item.id}
                         style={{ cursor: 'pointer' }}
-                        onClick={() => navigate('/item')}
+                        onClick={() => navigate(`/item/${item.id}`)}
                     >
                         <td>{item.name}</td>
                         <td>{dayjs(item.addedDate).format('DD MMMM YYYY')}</td>

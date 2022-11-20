@@ -11,7 +11,7 @@ const App: React.FC = () => (
         <Routes>
             <Route path="/" element={<Navigate to="/items" />} />
             <Route path="/items" element={<ItemsPage />} />
-            <Route path="/item" element={<ItemDetails />} />
+            <Route path="/item/:id" element={<ItemDetails />} />
         </Routes>
     </Box>
 );
