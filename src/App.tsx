@@ -3,14 +3,11 @@ import { Box } from '@mantine/core';
 import { ItemsPage } from './pages';
 import { Navbar } from './components';
 
-const App: React.FC = () => {
-  return (
+const App: React.FC = () => (
     <Box display="block" pos="fixed" w="100vw" h="100vh">
-      <Navbar />
-      <ItemsPage/>
+        <Navbar />
+        <ItemsPage />
     </Box>
-    
-  );
-}
+);
 
 export default App;
