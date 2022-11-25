@@ -1,3 +1,5 @@
 export * from './UserItemsList';
 export * from './Navbar';
-export * from './ItemAdder';
+export * from './AddItem/ItemAdder';
+export * from './TagList';
+export * from './TagBadge';

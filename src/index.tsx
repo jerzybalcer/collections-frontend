@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { BrowserRouter } from 'react-router-dom';
+import { AddItemContextProvider } from './context';
 import App from './App';
 
 const root = ReactDOM.createRoot(
@@ -18,7 +19,9 @@ root.render(
             <NotificationsProvider>
                 <QueryClientProvider client={queryClient}>
                     <BrowserRouter>
-                        <App />
+                        <AddItemContextProvider>
+                            <App />
+                        </AddItemContextProvider>
                     </BrowserRouter>
                 </QueryClientProvider>
             </NotificationsProvider>
