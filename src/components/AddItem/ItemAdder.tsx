@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Drawer, Stepper, Button, Group, Flex } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons';
 import { DefineItem } from './DefineItem';
 import { ChooseCategory } from './ChooseCategory';
 import { FillTags } from './FillTags';
@@ -25,28 +27,34 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
         setCurrentStep((current) => (current > 0 ? current - 1 : current));
 
     const addItem = async (): Promise<void> => {
-        // fetch(
-        //     'https://localhost:7185/api/user/11C4317C-4389-4BE8-949C-8A9D637BEE93/item',
-        //     {
-        //         method: 'POST',
-        //         body: JSON.stringify(newItem),
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Accept: 'application/json',
-        //         },
-        //     },
-        // ).then((response) => {
-        //     if (response.ok) {
-        //         showNotification({
-        //             title: 'Success!',
-        //             message: 'Item added to your collection',
-        //             color: 'teal',
-        //             icon: <IconCheck size={16} />,
-        //         });
-        //         refetchItems();
-        //     }
-        //     setIsOpen(false);
-        // });
+        fetch(
+            'https://localhost:7185/api/user/11C4317C-4389-4BE8-949C-8A9D637BEE93/item',
+            {
+                method: 'POST',
+                body: JSON.stringify({}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            },
+        ).then((response) => {
+            if (response.ok) {
+                showNotification({
+                    title: 'Success!',
+                    message: 'Item added to your collection',
+                    color: 'teal',
+                    icon: <IconCheck size={16} />,
+                });
+                refetchItems();
+            }
+            setIsOpen(false);
+        });
+    };
+
+    const onNextButtonClick = () => {
+        nextStep();
+
+        if (currentStep === 3) addItem();
     };
 
     return (
@@ -95,7 +103,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                 <Button variant="default" onClick={prevStep} size="lg">
                     Back
                 </Button>
-                <Button onClick={nextStep} size="lg">
+                <Button onClick={onNextButtonClick} size="lg">
                     {currentStep < 2 ? 'Next' : 'Create'}
                 </Button>
             </Group>

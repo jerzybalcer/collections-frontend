@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
     Select,
     Flex,
@@ -18,13 +18,6 @@ export const ChooseCategory: React.FC = () => {
     const { categoryId, setCategoryId, newCategory, setNewCategory } =
         useContext(AddItemContext);
 
-    const [tags, setTags] = useState<string[]>([
-        'Duration',
-        'Artist',
-        'Material',
-        'Production Date',
-    ]);
-
     const fetchCategories = async (): Promise<SimpleCategory[]> =>
         fetch(`https://localhost:7185/api/categories`).then((response) =>
             response.json(),
@@ -35,13 +28,42 @@ export const ChooseCategory: React.FC = () => {
         fetchCategories,
     );
 
+    const fetchTags = async (): Promise<string[]> =>
+        fetch(`https://localhost:7185/api/tags`).then((response) =>
+            response.json(),
+        );
+
+    const [tags, setTags] = useState<string[]>([]);
+
+    const { data: fetchedTags, isLoading: tagsLoading } = useQuery(
+        `tags`,
+        fetchTags,
+    );
+
+    // Save fetched tags to state (required by MultiSelect with creatable prop)
+    useEffect(() => {
+        if (!fetchedTags || tagsLoading) return;
+
+        setTags(tags.concat(fetchedTags as string[]));
+    }, [fetchedTags]);
+
+    // Restore tags from context & fetched data
+    useEffect(() => {
+        if (!newCategory || !newCategory.tags) return;
+
+        if (fetchedTags) setTags(newCategory.tags.concat(fetchedTags));
+        else setTags(newCategory.tags);
+    }, []);
+
     return (
         <Flex
             direction="column"
             align={categoriesLoading ? 'center' : 'stretch'}
         >
-            {categoriesLoading && <Loader size="lg" mt="10rem" />}
-            {categories && !categoriesLoading && (
+            {(categoriesLoading || tagsLoading) && (
+                <Loader size="lg" mt="10rem" />
+            )}
+            {categories && !categoriesLoading && tags && !tagsLoading && (
                 <Accordion
                     variant="filled"
                     radius="xs"
@@ -108,6 +130,7 @@ export const ChooseCategory: React.FC = () => {
                                 />
                                 <MultiSelect
                                     data={tags}
+                                    nothingFound="Type something to start adding"
                                     label="Tags"
                                     placeholder="Pick at least one"
                                     size="lg"
@@ -123,6 +146,10 @@ export const ChooseCategory: React.FC = () => {
                                             ...current,
                                             query,
                                         ]);
+                                        setNewCategory({
+                                            ...newCategory,
+                                            tags,
+                                        });
                                         return query;
                                     }}
                                     onChange={(values) =>
@@ -131,7 +158,7 @@ export const ChooseCategory: React.FC = () => {
                                             tags: values,
                                         })
                                     }
-                                    value={newCategory.tags ?? []}
+                                    value={newCategory.tags}
                                 />
                             </Flex>
                         </Accordion.Panel>

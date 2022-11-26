@@ -54,7 +54,7 @@ export const AddItemContextProvider: React.FC<ContextProps> = ({
         setTagValues([]);
         setNewCategory({} as NewCategory);
     };
-    console.log(newCategory);
+
     const value = useMemo(
         () => ({
             itemInfo,
