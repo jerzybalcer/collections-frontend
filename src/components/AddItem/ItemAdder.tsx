@@ -66,6 +66,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
             opened={isOpen}
             onClose={() => {
                 setIsOpen(false);
+                setCurrentStep(0);
                 reset();
             }}
             position="right"
