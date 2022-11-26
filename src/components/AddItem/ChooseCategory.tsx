@@ -11,12 +11,18 @@ import {
 } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { IconSquarePlus, IconVocabulary } from '@tabler/icons';
-import { AddItemContext } from '../../context';
+import { AddItemContext, CategoryMode } from '../../context';
 import { SimpleCategory } from '../../model';
 
 export const ChooseCategory: React.FC = () => {
-    const { categoryId, setCategoryId, newCategory, setNewCategory } =
-        useContext(AddItemContext);
+    const {
+        categoryId,
+        setCategoryId,
+        newCategory,
+        setNewCategory,
+        categoryMode,
+        setCategoryMode,
+    } = useContext(AddItemContext);
 
     const fetchCategories = async (): Promise<SimpleCategory[]> =>
         fetch(`https://localhost:7185/api/categories`).then((response) =>
@@ -39,6 +45,14 @@ export const ChooseCategory: React.FC = () => {
         `tags`,
         fetchTags,
     );
+
+    const currentMode = (): CategoryMode => {
+        if (categoryMode) return categoryMode;
+
+        if (categories && categories.length === 0) return 'create';
+
+        return undefined;
+    };
 
     // Save fetched tags to state (required by MultiSelect with creatable prop)
     useEffect(() => {
@@ -68,7 +82,10 @@ export const ChooseCategory: React.FC = () => {
                     variant="filled"
                     radius="xs"
                     mt="xl"
-                    defaultValue={categories.length === 0 ? 'create' : ''}
+                    defaultValue={currentMode()}
+                    onChange={(value) =>
+                        setCategoryMode((value as CategoryMode) ?? undefined)
+                    }
                 >
                     <Accordion.Item value="choose">
                         <Accordion.Control

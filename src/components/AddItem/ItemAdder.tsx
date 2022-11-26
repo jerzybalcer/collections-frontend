@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { Drawer, Stepper, Button, Group, Flex } from '@mantine/core';
+import { Drawer, Stepper, Button, Group } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 import { DefineItem } from './DefineItem';
 import { ChooseCategory } from './ChooseCategory';
 import { FillTags } from './FillTags';
-import { AddItemContext } from '../../context';
+import { AddItemContext, NewCategory } from '../../context';
 
 interface ItemAdderProps {
     isOpen: boolean;
@@ -18,7 +18,8 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
     setIsOpen,
     refetchItems,
 }) => {
-    const { reset } = useContext(AddItemContext);
+    const { reset, categoryMode, setCategoryId, setNewCategory } =
+        useContext(AddItemContext);
 
     const [currentStep, setCurrentStep] = useState<number>(0);
     const nextStep = () =>
@@ -53,6 +54,9 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
 
     const onNextButtonClick = () => {
         nextStep();
+
+        if (categoryMode === 'choose') setNewCategory({} as NewCategory);
+        if (categoryMode === 'create') setCategoryId(null);
 
         if (currentStep === 3) addItem();
     };
@@ -100,10 +104,19 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
             </Stepper>
 
             <Group position="right" mt="xl">
-                <Button variant="default" onClick={prevStep} size="lg">
+                <Button
+                    variant="default"
+                    onClick={prevStep}
+                    size="lg"
+                    disabled={currentStep === 0}
+                >
                     Back
                 </Button>
-                <Button onClick={onNextButtonClick} size="lg">
+                <Button
+                    onClick={onNextButtonClick}
+                    size="lg"
+                    disabled={!categoryMode}
+                >
                     {currentStep < 2 ? 'Next' : 'Create'}
                 </Button>
             </Group>
