@@ -12,12 +12,20 @@ interface TagValue {
     value: string;
 }
 
+export interface NewCategory {
+    name: string;
+    color: string;
+    tags: string[];
+}
+
 interface AddItemContextModel {
     itemInfo: ItemInfo;
     categoryId: string | null;
+    newCategory: NewCategory;
     tagValues: TagValue[];
     setItemInfo: React.Dispatch<React.SetStateAction<ItemInfo>>;
     setCategoryId: React.Dispatch<React.SetStateAction<string | null>>;
+    setNewCategory: React.Dispatch<React.SetStateAction<NewCategory>>;
     setTagValues: React.Dispatch<React.SetStateAction<TagValue[]>>;
     reset: () => void;
 }
@@ -35,25 +43,31 @@ export const AddItemContextProvider: React.FC<ContextProps> = ({
 }) => {
     const [itemInfo, setItemInfo] = useState<ItemInfo>({} as ItemInfo);
     const [categoryId, setCategoryId] = useState<string | null>(null);
+    const [newCategory, setNewCategory] = useState<NewCategory>(
+        {} as NewCategory,
+    );
     const [tagValues, setTagValues] = useState<TagValue[]>([]);
 
     const reset = () => {
         setCategoryId(null);
         setItemInfo({} as ItemInfo);
         setTagValues([]);
+        setNewCategory({} as NewCategory);
     };
-
+    console.log(newCategory);
     const value = useMemo(
         () => ({
             itemInfo,
             categoryId,
+            newCategory,
             tagValues,
             setItemInfo,
             setCategoryId,
+            setNewCategory,
             setTagValues,
             reset,
         }),
-        [itemInfo, categoryId, tagValues],
+        [itemInfo, categoryId, newCategory, tagValues],
     );
 
     return (

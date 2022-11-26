@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Select,
     Flex,
@@ -15,7 +15,15 @@ import { AddItemContext } from '../../context';
 import { SimpleCategory } from '../../model';
 
 export const ChooseCategory: React.FC = () => {
-    const { categoryId, setCategoryId } = useContext(AddItemContext);
+    const { categoryId, setCategoryId, newCategory, setNewCategory } =
+        useContext(AddItemContext);
+
+    const [tags, setTags] = useState<string[]>([
+        'Duration',
+        'Artist',
+        'Material',
+        'Production Date',
+    ]);
 
     const fetchCategories = async (): Promise<SimpleCategory[]> =>
         fetch(`https://localhost:7185/api/categories`).then((response) =>
@@ -61,7 +69,6 @@ export const ChooseCategory: React.FC = () => {
                                     setCategoryId(value)
                                 }
                                 nothingFound="No categories yet!"
-                                style={{ flex: 1 }}
                             />
                         </Accordion.Panel>
                     </Accordion.Item>
@@ -77,7 +84,13 @@ export const ChooseCategory: React.FC = () => {
                                     withAsterisk
                                     size="lg"
                                     mb="lg"
-                                    onChange={() => {}}
+                                    onChange={(event) =>
+                                        setNewCategory({
+                                            ...newCategory,
+                                            name: event.currentTarget.value,
+                                        })
+                                    }
+                                    value={newCategory.name}
                                 />
                                 <ColorInput
                                     placeholder="Pick color"
@@ -85,20 +98,40 @@ export const ChooseCategory: React.FC = () => {
                                     withAsterisk
                                     size="lg"
                                     mb="lg"
+                                    onChange={(color) =>
+                                        setNewCategory({
+                                            ...newCategory,
+                                            color,
+                                        })
+                                    }
+                                    value={newCategory.color ?? undefined}
                                 />
                                 <MultiSelect
-                                    data={[
-                                        'Duration',
-                                        'Artist',
-                                        'Material',
-                                        'Production Date',
-                                    ]}
+                                    data={tags}
                                     label="Tags"
                                     placeholder="Pick at least one"
                                     size="lg"
                                     mb="lg"
                                     searchable
                                     withAsterisk
+                                    creatable
+                                    getCreateLabel={(query) =>
+                                        `+ Create ${query}`
+                                    }
+                                    onCreate={(query) => {
+                                        setTags((current) => [
+                                            ...current,
+                                            query,
+                                        ]);
+                                        return query;
+                                    }}
+                                    onChange={(values) =>
+                                        setNewCategory({
+                                            ...newCategory,
+                                            tags: values,
+                                        })
+                                    }
+                                    value={newCategory.tags ?? []}
                                 />
                             </Flex>
                         </Accordion.Panel>
