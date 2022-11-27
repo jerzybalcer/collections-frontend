@@ -1,15 +1,11 @@
 import React, { useMemo, useState, createContext } from 'react';
+import { TagValue } from '../model';
 
 interface ItemInfo {
     name: string;
     description: string;
     acquiredDate: string;
     isFavourite: boolean;
-}
-
-interface TagValue {
-    name: string;
-    value: string;
 }
 
 export interface NewCategory {

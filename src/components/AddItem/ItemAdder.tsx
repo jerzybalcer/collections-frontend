@@ -18,21 +18,48 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
     setIsOpen,
     refetchItems,
 }) => {
-    const { reset, categoryMode, setCategoryId, setNewCategory } =
-        useContext(AddItemContext);
+    const {
+        reset,
+        categoryMode,
+        setCategoryId,
+        setNewCategory,
+        itemInfo,
+        categoryId,
+        newCategory,
+        tagValues,
+    } = useContext(AddItemContext);
 
     const [currentStep, setCurrentStep] = useState<number>(0);
-    const nextStep = () =>
-        setCurrentStep((current) => (current < 3 ? current + 1 : current));
-    const prevStep = () =>
+
+    const nextStep = (): void =>
+        setCurrentStep((current) => (current < 2 ? current + 1 : current));
+    const prevStep = (): void =>
         setCurrentStep((current) => (current > 0 ? current - 1 : current));
+
+    const closeAdder = (): void => {
+        setIsOpen(false);
+        setCurrentStep(0);
+        reset();
+    };
 
     const addItem = async (): Promise<void> => {
         fetch(
             'https://localhost:7185/api/user/11C4317C-4389-4BE8-949C-8A9D637BEE93/item',
             {
                 method: 'POST',
-                body: JSON.stringify({}),
+                body: JSON.stringify({
+                    name: itemInfo.name,
+                    description: itemInfo.description,
+                    acquiredDate: itemInfo.acquiredDate,
+                    isFavourite: itemInfo.isFavourite,
+                    imageUrl: '',
+                    tags: tagValues,
+                    category: {
+                        id: categoryId,
+                        name: newCategory.name,
+                        color: newCategory.color,
+                    },
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
@@ -46,29 +73,25 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                     color: 'teal',
                     icon: <IconCheck size={16} />,
                 });
+                closeAdder();
                 refetchItems();
             }
-            setIsOpen(false);
         });
     };
 
-    const onNextButtonClick = () => {
+    const onNextButtonClick = (): void => {
         nextStep();
 
         if (categoryMode === 'choose') setNewCategory({} as NewCategory);
         if (categoryMode === 'create') setCategoryId(null);
 
-        if (currentStep === 3) addItem();
+        if (currentStep === 2) addItem();
     };
 
     return (
         <Drawer
             opened={isOpen}
-            onClose={() => {
-                setIsOpen(false);
-                setCurrentStep(0);
-                reset();
-            }}
+            onClose={closeAdder}
             position="right"
             padding="xl"
             size="50vw"

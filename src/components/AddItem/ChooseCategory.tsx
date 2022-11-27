@@ -59,6 +59,7 @@ export const ChooseCategory: React.FC = () => {
         if (!fetchedTags || tagsLoading) return;
 
         setTags(tags.concat(fetchedTags as string[]));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedTags]);
 
     // Restore tags from context & fetched data
@@ -67,12 +68,14 @@ export const ChooseCategory: React.FC = () => {
 
         if (fetchedTags) setTags(newCategory.tags.concat(fetchedTags));
         else setTags(newCategory.tags);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <Flex
             direction="column"
             align={categoriesLoading ? 'center' : 'stretch'}
+            mt="xl"
         >
             {(categoriesLoading || tagsLoading) && (
                 <Loader size="lg" mt="10rem" />
@@ -81,7 +84,6 @@ export const ChooseCategory: React.FC = () => {
                 <Accordion
                     variant="filled"
                     radius="xs"
-                    mt="xl"
                     defaultValue={currentMode()}
                     onChange={(value) =>
                         setCategoryMode((value as CategoryMode) ?? undefined)

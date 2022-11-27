@@ -3,3 +3,9 @@ export interface SimpleCategory {
     name: string;
     color: string;
 }
+
+export interface NewItemCategory {
+    id: string | null;
+    name: string | null;
+    color: string | null;
+}
