@@ -42,7 +42,7 @@ export const DefineItem: React.FC = () => {
                 withAsterisk
                 size="lg"
                 mb="lg"
-                value={itemInfo.name}
+                value={itemInfo.name ?? ''}
                 onChange={onChangeName}
             />
             <DatePicker
@@ -63,13 +63,13 @@ export const DefineItem: React.FC = () => {
                 label="Description"
                 size="lg"
                 mb="lg"
-                value={itemInfo.description}
+                value={itemInfo.description ?? ''}
                 onChange={onChangeDescription}
             />
             <Checkbox
                 label="Set as favourite"
                 size="lg"
-                checked={itemInfo.isFavourite}
+                checked={itemInfo.isFavourite ?? false}
                 onChange={onChangeIsFavourite}
             />
         </Flex>

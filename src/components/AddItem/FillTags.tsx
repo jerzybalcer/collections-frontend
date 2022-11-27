@@ -56,6 +56,7 @@ export const FillTags: React.FC = () => {
                 <Flex direction="column">
                     {tagsSource().map((tag) => (
                         <TextInput
+                            key={tag}
                             name={tag}
                             placeholder="Enter value"
                             label={tag}
@@ -64,7 +65,8 @@ export const FillTags: React.FC = () => {
                             mb="lg"
                             onChange={onTagValueChange}
                             value={
-                                tagValues.find((tv) => tv.name === tag)?.value
+                                tagValues.find((tv) => tv.name === tag)
+                                    ?.value ?? ''
                             }
                         />
                     ))}

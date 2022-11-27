@@ -131,7 +131,7 @@ export const ChooseCategory: React.FC = () => {
                                             name: event.currentTarget.value,
                                         })
                                     }
-                                    value={newCategory.name}
+                                    value={newCategory.name ?? ''}
                                 />
                                 <ColorInput
                                     placeholder="Pick color"
