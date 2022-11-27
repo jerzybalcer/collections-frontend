@@ -29,6 +29,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
         tagValues,
     } = useContext(AddItemContext);
 
+    const [isCreating, setIsCreating] = useState<boolean>(false);
     const [currentStep, setCurrentStep] = useState<number>(0);
 
     const nextStep = (): void =>
@@ -43,6 +44,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
     };
 
     const addItem = async (): Promise<void> => {
+        setIsCreating(true);
         fetch(
             'https://localhost:7185/api/user/11C4317C-4389-4BE8-949C-8A9D637BEE93/item',
             {
@@ -66,6 +68,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                 },
             },
         ).then((response) => {
+            setIsCreating(false);
             if (response.ok) {
                 showNotification({
                     title: 'Success!',
@@ -103,6 +106,11 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                 mt="xl"
                 size="lg"
                 h="85%"
+                sx={{
+                    '.mantine-Stepper-content': {
+                        height: '90%',
+                    },
+                }}
             >
                 <Stepper.Step
                     label="Category"
@@ -132,7 +140,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                     variant="default"
                     onClick={prevStep}
                     size="lg"
-                    disabled={currentStep === 0}
+                    disabled={currentStep === 0 || isCreating}
                 >
                     Back
                 </Button>
@@ -140,6 +148,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                     onClick={onNextButtonClick}
                     size="lg"
                     disabled={!categoryMode}
+                    loading={isCreating}
                 >
                     {currentStep < 2 ? 'Next' : 'Create'}
                 </Button>

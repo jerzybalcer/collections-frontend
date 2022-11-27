@@ -29,7 +29,7 @@ export const ItemsPage: React.FC = () => {
             <Flex dir="row" justify="space-between">
                 <Title color="blue.4">Your items</Title>
                 <Button
-                    size="md"
+                    size="lg"
                     ml="auto"
                     m="1rem"
                     display="block"

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { Flex, TextInput, Loader } from '@mantine/core';
+import { Flex, TextInput, Loader, ScrollArea } from '@mantine/core';
 import { AddItemContext } from '../../context';
 
 export const FillTags: React.FC = () => {
@@ -50,27 +50,30 @@ export const FillTags: React.FC = () => {
             direction="column"
             align={tagsLoading ? 'center' : 'stretch'}
             mt="xl"
+            h="100%"
         >
             {tagsLoading && <Loader size="lg" mt="10rem" />}
             {!tagsLoading && (
-                <Flex direction="column">
-                    {tagsSource().map((tag) => (
-                        <TextInput
-                            key={tag}
-                            name={tag}
-                            placeholder="Enter value"
-                            label={tag}
-                            withAsterisk
-                            size="lg"
-                            mb="lg"
-                            onChange={onTagValueChange}
-                            value={
-                                tagValues.find((tv) => tv.name === tag)
-                                    ?.value ?? ''
-                            }
-                        />
-                    ))}
-                </Flex>
+                <ScrollArea>
+                    <Flex direction="column">
+                        {tagsSource().map((tag) => (
+                            <TextInput
+                                key={tag}
+                                name={tag}
+                                placeholder="Enter value"
+                                label={tag}
+                                withAsterisk
+                                size="lg"
+                                mb="lg"
+                                onChange={onTagValueChange}
+                                value={
+                                    tagValues.find((tv) => tv.name === tag)
+                                        ?.value ?? ''
+                                }
+                            />
+                        ))}
+                    </Flex>
+                </ScrollArea>
             )}
         </Flex>
     );
