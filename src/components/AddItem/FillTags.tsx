@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { Flex, TextInput, Loader, ScrollArea } from '@mantine/core';
+import { Flex, TextInput, Loader, ScrollArea, Title } from '@mantine/core';
+import { IconListDetails } from '@tabler/icons';
 import { AddItemContext } from '../../context';
 
 export const FillTags: React.FC = () => {
@@ -52,6 +53,11 @@ export const FillTags: React.FC = () => {
             mt="xl"
             h="100%"
         >
+            <Flex mb="xl" align="center" gap="xs">
+                <IconListDetails />
+                <Title>Fill in tags values</Title>
+            </Flex>
+
             {tagsLoading && <Loader size="lg" mt="10rem" />}
             {!tagsLoading && (
                 <ScrollArea>
