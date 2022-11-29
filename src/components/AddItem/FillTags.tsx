@@ -1,10 +1,28 @@
 import React, { useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { Flex, TextInput, Loader, ScrollArea, Title } from '@mantine/core';
+import {
+    Flex,
+    TextInput,
+    Loader,
+    ScrollArea,
+    Title,
+    Group,
+    Button,
+} from '@mantine/core';
 import { IconListDetails } from '@tabler/icons';
 import { AddItemContext } from '../../context';
 
-export const FillTags: React.FC = () => {
+interface FillTagsProps {
+    addItem: () => void;
+    prevStep: () => void;
+    isCreating: boolean;
+}
+
+export const FillTags: React.FC<FillTagsProps> = ({
+    addItem,
+    prevStep,
+    isCreating,
+}) => {
     const { categoryId, newCategory, tagValues, setTagValues } =
         useContext(AddItemContext);
 
@@ -40,6 +58,10 @@ export const FillTags: React.FC = () => {
         setTagValues(newTagValues);
     };
 
+    const onNext = () => {
+        addItem();
+    };
+
     // Remove tags that don't belong to current category anymore
     useEffect(() => {
         setTagValues(tagValues.filter((tv) => tagsSource().includes(tv.name)));
@@ -60,7 +82,7 @@ export const FillTags: React.FC = () => {
 
             {tagsLoading && <Loader size="lg" mt="10rem" />}
             {!tagsLoading && (
-                <ScrollArea>
+                <ScrollArea sx={{ flexGrow: 1 }}>
                     <Flex direction="column">
                         {tagsSource().map((tag) => (
                             <TextInput
@@ -81,6 +103,20 @@ export const FillTags: React.FC = () => {
                     </Flex>
                 </ScrollArea>
             )}
+
+            <Group position="right" my="xl">
+                <Button
+                    variant="default"
+                    onClick={prevStep}
+                    size="lg"
+                    disabled={isCreating}
+                >
+                    Back
+                </Button>
+                <Button onClick={onNext} size="lg" loading={isCreating}>
+                    Create
+                </Button>
+            </Group>
         </Flex>
     );
 };

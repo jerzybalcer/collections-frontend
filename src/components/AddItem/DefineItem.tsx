@@ -6,12 +6,22 @@ import {
     Checkbox,
     Title,
     ScrollArea,
+    Group,
+    Button,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconPencilPlus } from '@tabler/icons';
 import { AddItemContext } from '../../context';
 
-export const DefineItem: React.FC = () => {
+interface DefineItemProps {
+    nextStep: () => void;
+    prevStep: () => void;
+}
+
+export const DefineItem: React.FC<DefineItemProps> = ({
+    nextStep,
+    prevStep,
+}) => {
     const { itemInfo, setItemInfo } = useContext(AddItemContext);
 
     const onChangeName = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -42,50 +52,64 @@ export const DefineItem: React.FC = () => {
         setItemInfo(changedItem);
     };
 
+    const onNext = () => {
+        nextStep();
+    };
+
     return (
         <Flex direction="column" mt="xl" h="100%">
             <Flex mb="xl" align="center" gap="xs">
                 <IconPencilPlus />
                 <Title>Define item</Title>
             </Flex>
-            <ScrollArea>
-                <TextInput
-                    placeholder="Enter name"
-                    label="Item name"
-                    withAsterisk
-                    size="lg"
-                    mb="lg"
-                    value={itemInfo.name ?? ''}
-                    onChange={onChangeName}
-                />
-                <DatePicker
-                    placeholder="Pick date"
-                    label="Acquired date"
-                    withAsterisk
-                    size="lg"
-                    mb="lg"
-                    value={
-                        itemInfo.acquiredDate
-                            ? new Date(itemInfo.acquiredDate)
-                            : undefined
-                    }
-                    onChange={onChangeDate}
-                />
-                <Textarea
-                    placeholder="Enter detailed description"
-                    label="Description"
-                    size="lg"
-                    mb="lg"
-                    value={itemInfo.description ?? ''}
-                    onChange={onChangeDescription}
-                />
-                <Checkbox
-                    label="Set as favourite"
-                    size="lg"
-                    checked={itemInfo.isFavourite ?? false}
-                    onChange={onChangeIsFavourite}
-                />
+            <ScrollArea sx={{ flexGrow: 1 }}>
+                <form>
+                    <TextInput
+                        placeholder="Enter name"
+                        label="Item name"
+                        withAsterisk
+                        size="lg"
+                        mb="lg"
+                        value={itemInfo.name ?? ''}
+                        onChange={onChangeName}
+                    />
+                    <DatePicker
+                        placeholder="Pick date"
+                        label="Acquired date"
+                        withAsterisk
+                        size="lg"
+                        mb="lg"
+                        value={
+                            itemInfo.acquiredDate
+                                ? new Date(itemInfo.acquiredDate)
+                                : undefined
+                        }
+                        onChange={onChangeDate}
+                    />
+                    <Textarea
+                        placeholder="Enter detailed description"
+                        label="Description"
+                        size="lg"
+                        mb="lg"
+                        value={itemInfo.description ?? ''}
+                        onChange={onChangeDescription}
+                    />
+                    <Checkbox
+                        label="Set as favourite"
+                        size="lg"
+                        checked={itemInfo.isFavourite ?? false}
+                        onChange={onChangeIsFavourite}
+                    />
+                </form>
             </ScrollArea>
+            <Group position="right" my="xl">
+                <Button variant="default" onClick={prevStep} size="lg">
+                    Back
+                </Button>
+                <Button onClick={onNext} size="lg">
+                    Next
+                </Button>
+            </Group>
         </Flex>
     );
 };

@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { Drawer, Stepper, Button, Group } from '@mantine/core';
+import { Drawer, Stepper } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 import { DefineItem } from './DefineItem';
 import { ChooseCategory } from './ChooseCategory';
 import { FillTags } from './FillTags';
-import { AddItemContext, NewCategory } from '../../context';
+import { AddItemContext } from '../../context';
 
 interface ItemAdderProps {
     isOpen: boolean;
@@ -18,16 +18,8 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
     setIsOpen,
     refetchItems,
 }) => {
-    const {
-        reset,
-        categoryMode,
-        setCategoryId,
-        setNewCategory,
-        itemInfo,
-        categoryId,
-        newCategory,
-        tagValues,
-    } = useContext(AddItemContext);
+    const { reset, itemInfo, categoryId, newCategory, tagValues } =
+        useContext(AddItemContext);
 
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const [currentStep, setCurrentStep] = useState<number>(0);
@@ -82,15 +74,6 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
         });
     };
 
-    const onNextButtonClick = (): void => {
-        nextStep();
-
-        if (categoryMode === 'choose') setNewCategory({} as NewCategory);
-        if (categoryMode === 'create') setCategoryId(null);
-
-        if (currentStep === 2) addItem();
-    };
-
     return (
         <Drawer
             opened={isOpen}
@@ -105,7 +88,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                 breakpoint="sm"
                 mt="xl"
                 size="lg"
-                h="85%"
+                h="100%"
                 sx={{
                     '.mantine-Stepper-content': {
                         height: '90%',
@@ -117,42 +100,27 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                     description="Choose Category"
                     allowStepSelect={false}
                 >
-                    <ChooseCategory />
+                    <ChooseCategory nextStep={nextStep} />
                 </Stepper.Step>
                 <Stepper.Step
                     label="Item"
                     description="Define item"
                     allowStepSelect={false}
                 >
-                    <DefineItem />
+                    <DefineItem nextStep={nextStep} prevStep={prevStep} />
                 </Stepper.Step>
                 <Stepper.Step
                     label="Tags"
                     description="Fill in tags values"
                     allowStepSelect={false}
                 >
-                    <FillTags />
+                    <FillTags
+                        addItem={addItem}
+                        prevStep={prevStep}
+                        isCreating={isCreating}
+                    />
                 </Stepper.Step>
             </Stepper>
-
-            <Group position="right" mt="xl">
-                <Button
-                    variant="default"
-                    onClick={prevStep}
-                    size="lg"
-                    disabled={currentStep === 0 || isCreating}
-                >
-                    Back
-                </Button>
-                <Button
-                    onClick={onNextButtonClick}
-                    size="lg"
-                    disabled={!categoryMode}
-                    loading={isCreating}
-                >
-                    {currentStep < 2 ? 'Next' : 'Create'}
-                </Button>
-            </Group>
         </Drawer>
     );
 };

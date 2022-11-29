@@ -8,13 +8,19 @@ import {
     Loader,
     Title,
     Accordion,
+    Group,
+    Button,
 } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { IconSquarePlus, IconVocabulary } from '@tabler/icons';
-import { AddItemContext, CategoryMode } from '../../context';
+import { AddItemContext, CategoryMode, NewCategory } from '../../context';
 import { SimpleCategory } from '../../model';
 
-export const ChooseCategory: React.FC = () => {
+interface ChooseCategoryProps {
+    nextStep: () => void;
+}
+
+export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
     const {
         categoryId,
         setCategoryId,
@@ -54,6 +60,13 @@ export const ChooseCategory: React.FC = () => {
         return undefined;
     };
 
+    const onNext = () => {
+        if (categoryMode === 'choose') setNewCategory({} as NewCategory);
+        if (categoryMode === 'create') setCategoryId(null);
+
+        nextStep();
+    };
+
     // Save fetched tags to state (required by MultiSelect with creatable prop)
     useEffect(() => {
         if (!fetchedTags || tagsLoading) return;
@@ -76,6 +89,7 @@ export const ChooseCategory: React.FC = () => {
             direction="column"
             align={categoriesLoading ? 'center' : 'stretch'}
             mt="xl"
+            h="100%"
         >
             {(categoriesLoading || tagsLoading) && (
                 <Loader size="lg" mt="10rem" />
@@ -88,6 +102,7 @@ export const ChooseCategory: React.FC = () => {
                     onChange={(value) =>
                         setCategoryMode((value as CategoryMode) ?? undefined)
                     }
+                    sx={{ flexGrow: 1 }}
                 >
                     <Accordion.Item value="choose">
                         <Accordion.Control
@@ -184,6 +199,14 @@ export const ChooseCategory: React.FC = () => {
                     </Accordion.Item>
                 </Accordion>
             )}
+            <Group position="right" my="xl">
+                <Button variant="default" onClick={() => {}} disabled size="lg">
+                    Back
+                </Button>
+                <Button onClick={onNext} size="lg" disabled={!categoryMode}>
+                    Next
+                </Button>
+            </Group>
         </Flex>
     );
 };
