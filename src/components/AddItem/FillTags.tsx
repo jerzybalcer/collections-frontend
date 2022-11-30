@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import {
     Flex,
@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { IconListDetails } from '@tabler/icons';
 import { AddItemContext } from '../../context';
+import { areRecordsEqual } from '../../helpers';
 
 interface FillTagsProps {
     addItem: () => void;
@@ -25,6 +26,8 @@ export const FillTags: React.FC<FillTagsProps> = ({
 }) => {
     const { categoryId, newCategory, tagValues, setTagValues } =
         useContext(AddItemContext);
+
+    const [errors, setErrors] = useState<Record<string, boolean>>({});
 
     const fetchTagsForCategory = async (): Promise<string[]> =>
         fetch(`https://localhost:7185/api/category/${categoryId}/tags`).then(
@@ -44,21 +47,45 @@ export const FillTags: React.FC<FillTagsProps> = ({
     ): void => {
         const newTagValues = [...tagValues];
 
-        const index = newTagValues.findIndex(
+        let index = newTagValues.findIndex(
             (tv) => tv.name === event.currentTarget.name,
         );
 
         if (index === -1)
-            newTagValues.push({
-                name: event.currentTarget.name,
-                value: event.currentTarget.value,
-            });
+            index =
+                newTagValues.push({
+                    name: event.currentTarget.name,
+                    value: event.currentTarget.value,
+                }) - 1;
         else newTagValues[index].value = event.currentTarget.value;
+
+        if (newTagValues[index].value)
+            setErrors({ ...errors, [event.currentTarget.name]: false });
 
         setTagValues(newTagValues);
     };
 
+    const isValid = (): boolean => {
+        const newErrors = { ...errors };
+
+        tagsSource().forEach((tag) => {
+            const tagValue = tagValues.find((tv) => tv.name === tag);
+            if (!tagValue || !tagValue.value) newErrors[tag] = true;
+        });
+
+        if (
+            !areRecordsEqual(newErrors, errors) ||
+            Object.values(newErrors).some((val) => val)
+        ) {
+            setErrors(newErrors);
+            return false;
+        }
+
+        return true;
+    };
+
     const onNext = () => {
+        if (!isValid()) return;
         addItem();
     };
 
@@ -97,6 +124,11 @@ export const FillTags: React.FC<FillTagsProps> = ({
                                 value={
                                     tagValues.find((tv) => tv.name === tag)
                                         ?.value ?? ''
+                                }
+                                error={
+                                    errors[tag]
+                                        ? `${tag} value is required`
+                                        : ''
                                 }
                             />
                         ))}

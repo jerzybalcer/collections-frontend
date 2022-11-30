@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Flex,
     TextInput,
@@ -12,6 +12,7 @@ import {
 import { DatePicker } from '@mantine/dates';
 import { IconPencilPlus } from '@tabler/icons';
 import { AddItemContext } from '../../context';
+import { areRecordsEqual } from '../../helpers';
 
 interface DefineItemProps {
     nextStep: () => void;
@@ -24,13 +25,19 @@ export const DefineItem: React.FC<DefineItemProps> = ({
 }) => {
     const { itemInfo, setItemInfo } = useContext(AddItemContext);
 
+    const [errors, setErrors] = useState<Record<string, boolean>>({});
+
     const onChangeName = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        if (event.currentTarget.value) setErrors({ ...errors, name: false });
+
         const changedItem = { ...itemInfo };
         changedItem.name = event.currentTarget.value;
         setItemInfo(changedItem);
     };
 
     const onChangeDate = (date: Date | null): void => {
+        if (date) setErrors({ ...errors, date: false });
+
         const changedItem = { ...itemInfo };
         changedItem.acquiredDate = date?.toISOString() ?? '';
         setItemInfo(changedItem);
@@ -52,7 +59,25 @@ export const DefineItem: React.FC<DefineItemProps> = ({
         setItemInfo(changedItem);
     };
 
+    const isValid = (): boolean => {
+        const newErrors = { ...errors };
+
+        if (!itemInfo.name) newErrors.name = true;
+        if (!itemInfo.acquiredDate) newErrors.date = true;
+
+        if (
+            !areRecordsEqual(newErrors, errors) ||
+            Object.values(newErrors).some((val) => val)
+        ) {
+            setErrors(newErrors);
+            return false;
+        }
+
+        return true;
+    };
+
     const onNext = () => {
+        if (!isValid()) return;
         nextStep();
     };
 
@@ -63,44 +88,48 @@ export const DefineItem: React.FC<DefineItemProps> = ({
                 <Title>Define item</Title>
             </Flex>
             <ScrollArea sx={{ flexGrow: 1 }}>
-                <form>
-                    <TextInput
-                        placeholder="Enter name"
-                        label="Item name"
-                        withAsterisk
-                        size="lg"
-                        mb="lg"
-                        value={itemInfo.name ?? ''}
-                        onChange={onChangeName}
-                    />
-                    <DatePicker
-                        placeholder="Pick date"
-                        label="Acquired date"
-                        withAsterisk
-                        size="lg"
-                        mb="lg"
-                        value={
-                            itemInfo.acquiredDate
-                                ? new Date(itemInfo.acquiredDate)
-                                : undefined
-                        }
-                        onChange={onChangeDate}
-                    />
-                    <Textarea
-                        placeholder="Enter detailed description"
-                        label="Description"
-                        size="lg"
-                        mb="lg"
-                        value={itemInfo.description ?? ''}
-                        onChange={onChangeDescription}
-                    />
-                    <Checkbox
-                        label="Set as favourite"
-                        size="lg"
-                        checked={itemInfo.isFavourite ?? false}
-                        onChange={onChangeIsFavourite}
-                    />
-                </form>
+                <TextInput
+                    name="name"
+                    placeholder="Enter name"
+                    label="Item name"
+                    withAsterisk
+                    size="lg"
+                    mb="lg"
+                    value={itemInfo.name ?? ''}
+                    onChange={onChangeName}
+                    error={errors.name ? 'Name is required' : ''}
+                />
+                <DatePicker
+                    name="date"
+                    placeholder="Pick date"
+                    label="Acquired date"
+                    withAsterisk
+                    size="lg"
+                    mb="lg"
+                    value={
+                        itemInfo.acquiredDate
+                            ? new Date(itemInfo.acquiredDate)
+                            : undefined
+                    }
+                    onChange={onChangeDate}
+                    error={errors.date ? 'Date is required' : ''}
+                />
+                <Textarea
+                    name="description"
+                    placeholder="Enter detailed description"
+                    label="Description"
+                    size="lg"
+                    mb="lg"
+                    value={itemInfo.description ?? ''}
+                    onChange={onChangeDescription}
+                />
+                <Checkbox
+                    name="isFavourite"
+                    label="Set as favourite"
+                    size="lg"
+                    checked={itemInfo.isFavourite ?? false}
+                    onChange={onChangeIsFavourite}
+                />
             </ScrollArea>
             <Group position="right" my="xl">
                 <Button variant="default" onClick={prevStep} size="lg">

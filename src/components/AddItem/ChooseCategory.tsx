@@ -15,6 +15,7 @@ import { useQuery } from 'react-query';
 import { IconSquarePlus, IconVocabulary } from '@tabler/icons';
 import { AddItemContext, CategoryMode, NewCategory } from '../../context';
 import { SimpleCategory } from '../../model';
+import { areRecordsEqual, isUnique } from '../../helpers';
 
 interface ChooseCategoryProps {
     nextStep: () => void;
@@ -45,6 +46,7 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
             response.json(),
         );
 
+    const [errors, setErrors] = useState<Record<string, boolean>>({});
     const [tags, setTags] = useState<string[]>([]);
 
     const { data: fetchedTags, isLoading: tagsLoading } = useQuery(
@@ -60,7 +62,74 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
         return undefined;
     };
 
+    const onChangeCategoryId = (value: string) => {
+        if (value) setErrors({ ...errors, chosenId: false });
+        setCategoryId(value);
+    };
+
+    const onChangeCategoryName = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        if (event.currentTarget.value) setErrors({ ...errors, name: false });
+        setNewCategory({
+            ...newCategory,
+            name: event.currentTarget.value,
+        });
+    };
+
+    const onChangeColor = (color: string) => {
+        if (color) setErrors({ ...errors, color: false });
+        setNewCategory({
+            ...newCategory,
+            color,
+        });
+    };
+
+    const onChangeTags = (values: string[]) => {
+        if (values.length) setErrors({ ...errors, tags: false });
+        setNewCategory({
+            ...newCategory,
+            tags: values,
+        });
+    };
+
+    const onCreateTag = (query: string) => {
+        setTags([...tags, query]);
+        setNewCategory({
+            ...newCategory,
+            tags,
+        });
+        return query;
+    };
+
+    const isValid = (): boolean => {
+        const newErrors = { ...errors };
+
+        if (categoryMode === 'choose' && !categoryId) {
+            newErrors.chosenId = true;
+        }
+
+        if (categoryMode === 'create') {
+            if (!newCategory.name) newErrors.name = true;
+            if (!newCategory.color) newErrors.color = true;
+            if (!newCategory.tags || newCategory.tags.length === 0)
+                newErrors.tags = true;
+        }
+
+        if (
+            !areRecordsEqual(newErrors, errors) ||
+            Object.values(newErrors).some((val) => val)
+        ) {
+            setErrors(newErrors);
+            return false;
+        }
+
+        return true;
+    };
+
     const onNext = () => {
+        if (!isValid()) return;
+
         if (categoryMode === 'choose') setNewCategory({} as NewCategory);
         if (categoryMode === 'create') setCategoryId(null);
 
@@ -79,7 +148,8 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
     useEffect(() => {
         if (!newCategory || !newCategory.tags) return;
 
-        if (fetchedTags) setTags(newCategory.tags.concat(fetchedTags));
+        if (fetchedTags)
+            setTags(newCategory.tags.concat(fetchedTags).filter(isUnique));
         else setTags(newCategory.tags);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -121,10 +191,13 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
                                 })}
                                 size="lg"
                                 value={categoryId}
-                                onChange={(value: string) =>
-                                    setCategoryId(value)
-                                }
+                                onChange={onChangeCategoryId}
                                 nothingFound="No categories yet!"
+                                error={
+                                    errors.chosenId
+                                        ? 'Category is required'
+                                        : ''
+                                }
                             />
                         </Accordion.Panel>
                     </Accordion.Item>
@@ -140,13 +213,11 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
                                     withAsterisk
                                     size="lg"
                                     mb="lg"
-                                    onChange={(event) =>
-                                        setNewCategory({
-                                            ...newCategory,
-                                            name: event.currentTarget.value,
-                                        })
-                                    }
+                                    onChange={onChangeCategoryName}
                                     value={newCategory.name ?? ''}
+                                    error={
+                                        errors.name ? 'Name is required' : ''
+                                    }
                                 />
                                 <ColorInput
                                     placeholder="Pick color"
@@ -154,13 +225,11 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
                                     withAsterisk
                                     size="lg"
                                     mb="lg"
-                                    onChange={(color) =>
-                                        setNewCategory({
-                                            ...newCategory,
-                                            color,
-                                        })
-                                    }
+                                    onChange={onChangeColor}
                                     value={newCategory.color ?? undefined}
+                                    error={
+                                        errors.color ? 'Color is required' : ''
+                                    }
                                 />
                                 <MultiSelect
                                     data={tags}
@@ -175,24 +244,14 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
                                     getCreateLabel={(query) =>
                                         `+ Create ${query}`
                                     }
-                                    onCreate={(query) => {
-                                        setTags((current) => [
-                                            ...current,
-                                            query,
-                                        ]);
-                                        setNewCategory({
-                                            ...newCategory,
-                                            tags,
-                                        });
-                                        return query;
-                                    }}
-                                    onChange={(values) =>
-                                        setNewCategory({
-                                            ...newCategory,
-                                            tags: values,
-                                        })
-                                    }
+                                    onCreate={onCreateTag}
+                                    onChange={onChangeTags}
                                     value={newCategory.tags}
+                                    error={
+                                        errors.tags
+                                            ? 'At least one tag is required'
+                                            : ''
+                                    }
                                 />
                             </Flex>
                         </Accordion.Panel>
