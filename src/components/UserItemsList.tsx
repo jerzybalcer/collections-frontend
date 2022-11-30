@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { Table, Flex, Text, Box, Card, Badge, ScrollArea } from '@mantine/core';
+import { Flex, Text, Card, Badge, ScrollArea } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { IconHeart } from '@tabler/icons';
 import { SimpleItem } from '../model';
