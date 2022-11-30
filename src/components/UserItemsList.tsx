@@ -13,7 +13,7 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({ items }) => {
     const navigate = useNavigate();
 
     return (
-        <ScrollArea h="70%" w="100%">
+        <ScrollArea h="75%" w="100%">
             <Flex direction="column" w="100%" h="100%" pt="lg">
                 {items.map((item: SimpleItem) => (
                     <Card

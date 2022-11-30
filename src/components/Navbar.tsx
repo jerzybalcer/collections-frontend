@@ -6,10 +6,21 @@ export const Navbar: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <Flex w="100%" h="6%" bg="gray.4" mb="6rem">
+        <Flex
+            w="100%"
+            mb="6rem"
+            pb="xs"
+            sx={{
+                borderStyle: 'solid',
+                borderWidth: '0 0 1px 0',
+                boxShadow: '0 0 5px 0',
+                borderColor: 'lightgray',
+            }}
+            bg="white"
+        >
             <Title
-                size="3rem"
-                color="blue.8"
+                order={1}
+                color="blue"
                 p="0.5rem"
                 style={{ cursor: 'pointer' }}
                 onClick={() => navigate('/')}
