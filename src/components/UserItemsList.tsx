@@ -1,7 +1,8 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { Table } from '@mantine/core';
+import { Table, Flex, Text, Box, Card, Badge, ScrollArea } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { IconHeart } from '@tabler/icons';
 import { SimpleItem } from '../model';
 
 interface UserItemsListProps {
@@ -12,29 +13,51 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({ items }) => {
     const navigate = useNavigate();
 
     return (
-        <Table fontSize="lg" verticalSpacing="lg">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Added Date</th>
-                    <th>Acquired Date</th>
-                </tr>
-            </thead>
-            <tbody>
+        <ScrollArea h="70%" w="100%">
+            <Flex direction="column" w="100%" h="100%" pt="lg">
                 {items.map((item: SimpleItem) => (
-                    <tr
+                    <Card
+                        shadow="sm"
+                        p="lg"
+                        mb="md"
+                        mx="md"
+                        radius="md"
+                        withBorder
                         key={item.id}
-                        style={{ cursor: 'pointer' }}
+                        style={{
+                            cursor: 'pointer',
+                        }}
                         onClick={() => navigate(`/item/${item.id}`)}
                     >
-                        <td>{item.name}</td>
-                        <td>{dayjs(item.addedDate).format('DD MMMM YYYY')}</td>
-                        <td>
-                            {dayjs(item.acquiredDate).format('DD MMMM YYYY')}
-                        </td>
-                    </tr>
+                        <Flex justify="space-between" mb="md">
+                            <Badge
+                                size="xl"
+                                variant="filled"
+                                bg={item.category.color}
+                            >
+                                {item.category.name}
+                            </Badge>
+                            <IconHeart
+                                fill={item.isFavourite ? 'red' : 'transparent'}
+                                strokeWidth="1.5"
+                                size="2rem"
+                            />
+                        </Flex>
+
+                        <Text weight={500} fz="xl" mb="xs">
+                            {item.name}
+                        </Text>
+
+                        <Text size="md" color="dimmed">
+                            {dayjs(item.addedDate).format('DD MMMM YYYY')}
+                        </Text>
+
+                        <Text size="md" color="dimmed">
+                            {dayjs(item.acquiredDate).format('DD MMMM YYYY')}{' '}
+                        </Text>
+                    </Card>
                 ))}
-            </tbody>
-        </Table>
+            </Flex>
+        </ScrollArea>
     );
 };

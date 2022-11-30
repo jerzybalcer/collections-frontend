@@ -9,3 +9,8 @@ export interface NewItemCategory {
     name: string | null;
     color: string | null;
 }
+
+export interface SimplestCategory {
+    name: string;
+    color: string;
+}

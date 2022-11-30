@@ -31,7 +31,7 @@ export const ItemsPage: React.FC = () => {
                 <Button
                     size="lg"
                     ml="auto"
-                    m="1rem"
+                    my="md"
                     display="block"
                     onClick={() => setIsAddDrawerOpen(true)}
                 >
@@ -39,7 +39,7 @@ export const ItemsPage: React.FC = () => {
                 </Button>
             </Flex>
 
-            <Flex mih="50%">
+            <Flex mih="50%" h="100%">
                 {itemsLoading && <Loader size="xl" m="auto" display="block" />}
                 {!itemsLoading && items && <UserItemsList items={items} />}
             </Flex>

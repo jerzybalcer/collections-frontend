@@ -56,7 +56,7 @@ export const ItemDetails: React.FC = () => {
         <Box mx="10%" h="100%">
             <Flex dir="row" justify="space-between" align="center">
                 <Button
-                    size="md"
+                    size="lg"
                     variant="outline"
                     mr="lg"
                     onClick={() => navigate(-1)}
@@ -66,7 +66,7 @@ export const ItemDetails: React.FC = () => {
                 <Title color="blue.4">Item Details</Title>
                 <Flex dir="row" ml="auto" m="1rem">
                     <Button
-                        size="md"
+                        size="lg"
                         display="block"
                         color="blue"
                         mr="2rem"
@@ -76,7 +76,7 @@ export const ItemDetails: React.FC = () => {
                         Modify item
                     </Button>
                     <Button
-                        size="md"
+                        size="lg"
                         display="block"
                         color="red"
                         onClick={() => showDeleteModal(true)}
@@ -95,7 +95,7 @@ export const ItemDetails: React.FC = () => {
             >
                 <Button
                     mx="auto"
-                    size="md"
+                    size="lg"
                     display="block"
                     color="red"
                     onClick={() => deleteItem()}

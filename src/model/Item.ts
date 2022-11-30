@@ -1,4 +1,4 @@
-import { NewItemCategory } from './Category';
+import { NewItemCategory, SimplestCategory } from './Category';
 import { TagValue } from './TagValue';
 
 export interface SimpleItem {
@@ -6,6 +6,8 @@ export interface SimpleItem {
     name: string;
     addedDate: string;
     acquiredDate: string;
+    isFavourite: boolean;
+    category: SimplestCategory;
 }
 
 export interface FullItem {
