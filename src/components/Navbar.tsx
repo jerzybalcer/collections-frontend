@@ -8,7 +8,7 @@ export const Navbar: React.FC = () => {
     return (
         <Flex
             w="100%"
-            mb="6rem"
+            mb="xl"
             pb="xs"
             sx={{
                 borderStyle: 'solid',

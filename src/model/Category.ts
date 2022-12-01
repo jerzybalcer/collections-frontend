@@ -14,3 +14,9 @@ export interface SimplestCategory {
     name: string;
     color: string;
 }
+
+export interface FullItemCategory {
+    name: string;
+    color: string;
+    tags: string[];
+}

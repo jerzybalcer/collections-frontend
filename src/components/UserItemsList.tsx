@@ -2,8 +2,9 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Flex, Text, Card, Badge, ScrollArea } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { IconHeart } from '@tabler/icons';
 import { SimpleItem } from '../model';
+import { CategoryBadge } from './CategoryBadge';
+import { FavouriteButton } from './FavouriteButton';
 
 interface UserItemsListProps {
     items: SimpleItem[];
@@ -30,17 +31,10 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({ items }) => {
                         onClick={() => navigate(`/item/${item.id}`)}
                     >
                         <Flex justify="space-between" mb="md">
-                            <Badge
-                                size="xl"
-                                variant="filled"
-                                bg={item.category.color}
-                            >
-                                {item.category.name}
-                            </Badge>
-                            <IconHeart
-                                fill={item.isFavourite ? 'red' : 'transparent'}
-                                strokeWidth="1.5"
-                                size="2rem"
+                            <CategoryBadge category={item.category} />
+                            <FavouriteButton
+                                isFavourite={item.isFavourite}
+                                onClick={() => {}}
                             />
                         </Flex>
 

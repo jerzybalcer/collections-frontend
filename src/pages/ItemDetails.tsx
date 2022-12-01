@@ -3,18 +3,18 @@ import {
     Modal,
     Title,
     Box,
-    Stack,
     Flex,
     Button,
     Loader,
-    Text,
+    Card,
+    ActionIcon,
 } from '@mantine/core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import dayjs from 'dayjs';
 import { showNotification } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons';
+import { IconCheck, IconChevronLeft } from '@tabler/icons';
 import { FullItem } from '../model';
+import { ItemInfo, ItemTagsList } from '../components';
 
 export const ItemDetails: React.FC = () => {
     const [fullSizeImage, showFullSizeImage] = useState<boolean>(false);
@@ -53,38 +53,18 @@ export const ItemDetails: React.FC = () => {
     };
 
     return (
-        <Box mx="10%" h="100%">
-            <Flex dir="row" justify="space-between" align="center">
-                <Button
-                    size="lg"
-                    variant="outline"
-                    mr="lg"
+        <Card mx="10%" h="90%" shadow="md" p="lg" radius="md" withBorder>
+            <Flex dir="row" justify="start" align="center">
+                <ActionIcon
+                    color="blue"
+                    size="xl"
+                    variant="transparent"
                     onClick={() => navigate(-1)}
                 >
-                    Back
-                </Button>
-                <Title color="blue.4">Item Details</Title>
-                <Flex dir="row" ml="auto" m="1rem">
-                    <Button
-                        size="lg"
-                        display="block"
-                        color="blue"
-                        mr="2rem"
-                        onClick={() => {}}
-                        disabled={itemDetailsLoading}
-                    >
-                        Modify item
-                    </Button>
-                    <Button
-                        size="lg"
-                        display="block"
-                        color="red"
-                        onClick={() => showDeleteModal(true)}
-                        disabled={itemDetailsLoading}
-                    >
-                        Delete item
-                    </Button>
-                </Flex>
+                    <IconChevronLeft />
+                </ActionIcon>
+
+                <Title color="blue">Item Details</Title>
             </Flex>
 
             <Modal
@@ -105,64 +85,28 @@ export const ItemDetails: React.FC = () => {
                 </Button>
             </Modal>
 
-            <Flex mih="50%" mt="xl">
+            <Flex h="75%" mt="xl" justify="center" w="100%">
                 {itemDetailsLoading && (
                     <Loader size="xl" m="auto" display="block" />
                 )}
 
                 {!itemDetailsLoading && itemDetails && (
-                    <Stack>
-                        <Modal
-                            title={itemDetails.name}
-                            centered
-                            opened={fullSizeImage}
-                            onClose={() => showFullSizeImage(false)}
-                            sx={{
-                                '.mantine-Modal-modal': {
-                                    width: 'auto',
-                                    maxWidth: '90vw',
-                                    maxHeight: '90vh',
-                                    height: 'auto',
-                                },
-                            }}
-                        >
-                            <img
-                                src={itemDetails.imageUrl}
-                                alt=""
-                                style={{
-                                    maxHeight: '80vh',
-                                    maxWidth: '80vw',
-                                }}
-                            />
-                        </Modal>
-
-                        <Title order={2}>{itemDetails.name}</Title>
-
-                        <Box
-                            onClick={() => showFullSizeImage(true)}
-                            style={{
-                                cursor: 'zoom-in',
-                            }}
-                        >
-                            <img
-                                src={itemDetails.imageUrl}
-                                alt=""
-                                width="400px"
-                            />
-                        </Box>
-
-                        <Text>{itemDetails.description}</Text>
-                        <Text>{`Acquired: ${dayjs(
-                            itemDetails.acquiredDate,
-                        ).format('DD MMMM YYYY')}`}</Text>
-                        <Text>{`Added: ${dayjs(itemDetails.addedDate).format(
-                            'DD MMMM YYYY',
-                        )}`}</Text>
-
-                        {itemDetails.isFavourite && <Text>Favourite item</Text>}
-                    </Stack>
+                    <>
+                        <ItemInfo
+                            itemDetails={itemDetails}
+                            fullSizeImage={fullSizeImage}
+                            showFullSizeImage={showFullSizeImage}
+                            editItem={() => {}}
+                            likeItem={() => {}}
+                            deleteItem={() => showDeleteModal(true)}
+                        />
+                        <ItemTagsList
+                            tags={itemDetails.category.tags}
+                            tagValues={itemDetails.tagValues}
+                        />
+                    </>
                 )}
             </Flex>
-        </Box>
+        </Card>
     );
 };
