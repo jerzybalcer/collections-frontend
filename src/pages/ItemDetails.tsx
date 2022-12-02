@@ -53,7 +53,7 @@ export const ItemDetails: React.FC = () => {
     };
 
     return (
-        <Card mx="10%" h="90%" shadow="md" p="lg" radius="md" withBorder>
+        <Flex mx="10%" h="90%" p="lg" direction="column">
             <Flex dir="row" justify="start" align="center">
                 <ActionIcon
                     color="blue"
@@ -85,7 +85,7 @@ export const ItemDetails: React.FC = () => {
                 </Button>
             </Modal>
 
-            <Flex h="75%" mt="xl" justify="center" w="100%">
+            <Flex h="90%" mt="xl" justify="space-between" w="100%" gap="xs">
                 {itemDetailsLoading && (
                     <Loader size="xl" m="auto" display="block" />
                 )}
@@ -101,12 +101,12 @@ export const ItemDetails: React.FC = () => {
                             deleteItem={() => showDeleteModal(true)}
                         />
                         <ItemTagsList
-                            tags={itemDetails.category.tags}
+                            category={itemDetails.category}
                             tagValues={itemDetails.tagValues}
                         />
                     </>
                 )}
             </Flex>
-        </Card>
+        </Flex>
     );
 };

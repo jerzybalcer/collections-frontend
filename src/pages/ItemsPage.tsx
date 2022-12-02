@@ -26,8 +26,8 @@ export const ItemsPage: React.FC = () => {
                 refetchItems={refetchItems}
             />
 
-            <Flex dir="row" justify="space-between">
-                <Title color="blue.4">Your items</Title>
+            <Flex dir="row" justify="space-between" align="center">
+                <Title color="blue">Your items</Title>
                 <Button
                     size="lg"
                     ml="auto"
