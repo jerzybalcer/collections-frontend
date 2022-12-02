@@ -28,10 +28,11 @@ export const ItemDetails: React.FC = () => {
             response.json(),
         );
 
-    const { data: itemDetails, isLoading: itemDetailsLoading } = useQuery(
-        `item-details-${id}`,
-        getItemDetails,
-    );
+    const {
+        data: itemDetails,
+        isLoading: itemDetailsLoading,
+        refetch: refetchItemDetails,
+    } = useQuery(`item-details-${id}`, getItemDetails);
 
     const deleteItem = async (): Promise<void> => {
         fetch(`https://localhost:7185/api/item/${id}`, {
@@ -49,6 +50,16 @@ export const ItemDetails: React.FC = () => {
             }
 
             showDeleteModal(false);
+        });
+    };
+
+    const toggleIsFavourite = () => {
+        fetch(`https://localhost:7185/api/item/${id}/favourite`, {
+            method: 'PUT',
+        }).then((response) => {
+            if (response.ok) {
+                refetchItemDetails();
+            }
         });
     };
 
@@ -97,7 +108,7 @@ export const ItemDetails: React.FC = () => {
                             fullSizeImage={fullSizeImage}
                             showFullSizeImage={showFullSizeImage}
                             editItem={() => {}}
-                            likeItem={() => {}}
+                            likeItem={() => toggleIsFavourite()}
                             deleteItem={() => showDeleteModal(true)}
                         />
                         <ItemTagsList

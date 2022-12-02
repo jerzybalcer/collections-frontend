@@ -85,10 +85,10 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({
                         </ActionIcon>
                     </Flex>
                 </Card.Section>
-                <Flex direction="column" mb="xs" h="60%">
+                <Flex direction="column" mb="xs" h="30%">
                     <Box
                         style={{
-                            maxHeight: '85%',
+                            maxHeight: '100%',
                             marginRight: 'auto',
                             cursor: 'zoom-in',
                         }}
@@ -106,7 +106,7 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({
                         />
                     </Box>
                 </Flex>
-                <ScrollArea h="40%">
+                <ScrollArea h="60%">
                     <Flex h="40%" direction="column">
                         <Title order={2} mb="xs">
                             {itemDetails.name}
