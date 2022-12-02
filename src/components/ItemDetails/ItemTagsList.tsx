@@ -29,7 +29,7 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
                     <Title order={2} mb="xs">
                         Category
                     </Title>
-                    <Box mr="auto" mb="lg">
+                    <Box mr="auto" mb="lg" ml="md">
                         <CategoryBadge category={category} />
                     </Box>
                     <Title order={2} mb="xs">
@@ -42,7 +42,7 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
 
                         return (
                             <Flex direction="column" mb="xs" key={tag}>
-                                <Paper shadow="xs" radius="md" p="sm">
+                                <Paper shadow="xs" radius="md" p="sm" mx="md">
                                     <Flex
                                         justify="space-between"
                                         bg="gray.0"
