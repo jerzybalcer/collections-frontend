@@ -41,7 +41,9 @@ export const ItemsPage: React.FC = () => {
 
             <Flex mih="50%" h="100%">
                 {itemsLoading && <Loader size="xl" m="auto" display="block" />}
-                {!itemsLoading && items && <UserItemsList items={items} />}
+                {!itemsLoading && items && (
+                    <UserItemsList items={items} refetchItems={refetchItems} />
+                )}
             </Flex>
         </Box>
     );

@@ -16,7 +16,10 @@ export const FavouriteButton: React.FC<FavouriteButtonProps> = ({
             color="red"
             size="xl"
             variant="subtle"
-            onClick={() => onClick()}
+            onClick={(event: React.MouseEvent<HTMLElement>) => {
+                event.stopPropagation();
+                onClick();
+            }}
         >
             <IconHeart
                 fill={isFavourite ? 'red' : 'transparent'}
