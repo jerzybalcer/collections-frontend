@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
-import {
-    Modal,
-    Title,
-    Box,
-    Flex,
-    Button,
-    Loader,
-    Card,
-    ActionIcon,
-} from '@mantine/core';
+import { Modal, Title, Flex, Button, Loader, ActionIcon } from '@mantine/core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconChevronLeft } from '@tabler/icons';
-import { FullItem } from '../model';
 import { ItemInfo, ItemTagsList } from '../components';
+import { getItemDetails, deleteItem, toggleItemIsFavourite } from '../services';
 
 export const ItemDetails: React.FC = () => {
     const [fullSizeImage, showFullSizeImage] = useState<boolean>(false);
@@ -23,21 +14,14 @@ export const ItemDetails: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const getItemDetails = async (): Promise<FullItem> =>
-        fetch(`https://localhost:7185/api/item/${id}`).then((response) =>
-            response.json(),
-        );
-
     const {
         data: itemDetails,
         isLoading: itemDetailsLoading,
         refetch: refetchItemDetails,
-    } = useQuery(`item-details-${id}`, getItemDetails);
+    } = useQuery(`item-details-${id}`, () => getItemDetails(id as string));
 
-    const deleteItem = async (): Promise<void> => {
-        fetch(`https://localhost:7185/api/item/${id}`, {
-            method: 'DELETE',
-        }).then((response) => {
+    const deleteItemHandler = async (): Promise<void> => {
+        deleteItem(id as string).then((response) => {
             if (response.ok) {
                 showNotification({
                     title: 'Success!',
@@ -54,9 +38,7 @@ export const ItemDetails: React.FC = () => {
     };
 
     const toggleIsFavourite = () => {
-        fetch(`https://localhost:7185/api/item/${id}/favourite`, {
-            method: 'PUT',
-        }).then((response) => {
+        toggleItemIsFavourite(id as string).then((response) => {
             if (response.ok) {
                 refetchItemDetails();
             }
@@ -89,7 +71,7 @@ export const ItemDetails: React.FC = () => {
                     size="lg"
                     display="block"
                     color="red"
-                    onClick={() => deleteItem()}
+                    onClick={() => deleteItemHandler()}
                     disabled={itemDetailsLoading}
                 >
                     Delete

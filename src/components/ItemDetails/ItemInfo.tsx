@@ -2,14 +2,12 @@ import React from 'react';
 import dayjs from 'dayjs';
 import {
     Title,
-    Stack,
     Modal,
     Box,
     Text,
     Card,
     Flex,
     ActionIcon,
-    Image,
     ScrollArea,
 } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons';

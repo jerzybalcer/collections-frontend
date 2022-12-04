@@ -12,6 +12,7 @@ import {
 import { IconListDetails } from '@tabler/icons';
 import { AddItemContext } from '../../context';
 import { areRecordsEqual } from '../../helpers';
+import { getTagsForCategory } from '../../services';
 
 interface FillTagsProps {
     addItem: () => void;
@@ -29,14 +30,9 @@ export const FillTags: React.FC<FillTagsProps> = ({
 
     const [errors, setErrors] = useState<Record<string, boolean>>({});
 
-    const fetchTagsForCategory = async (): Promise<string[]> =>
-        fetch(`https://localhost:7185/api/category/${categoryId}/tags`).then(
-            (response) => response.json(),
-        );
-
     const { data: fetchedTags, isLoading: tagsLoading } = useQuery(
         `tags-for-category`,
-        fetchTagsForCategory,
+        () => getTagsForCategory(categoryId as string),
         { enabled: !!categoryId },
     );
 

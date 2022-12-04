@@ -2,15 +2,10 @@ import React, { useState } from 'react';
 import { Loader, Title, Box, Flex, Button } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { ItemAdder, UserItemsList } from '../components';
-import { SimpleItem } from '../model';
+import { getUserItems } from '../services';
 
 export const ItemsPage: React.FC = () => {
     const [isAddDrawerOpen, setIsAddDrawerOpen] = useState<boolean>(false);
-
-    const getUserItems = async (): Promise<SimpleItem[]> =>
-        fetch(
-            'https://localhost:7185/api/user/11C4317C-4389-4BE8-949C-8A9D637BEE93/items',
-        ).then((response) => response.json());
 
     const {
         data: items,

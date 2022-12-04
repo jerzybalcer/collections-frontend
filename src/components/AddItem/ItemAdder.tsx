@@ -6,6 +6,7 @@ import { DefineItem } from './DefineItem';
 import { ChooseCategory } from './ChooseCategory';
 import { FillTags } from './FillTags';
 import { AddItemContext } from '../../context';
+import { addUserItem } from '../../services';
 
 interface ItemAdderProps {
     isOpen: boolean;
@@ -37,29 +38,19 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
 
     const addItem = async (): Promise<void> => {
         setIsCreating(true);
-        fetch(
-            'https://localhost:7185/api/user/11C4317C-4389-4BE8-949C-8A9D637BEE93/item',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    name: itemInfo.name,
-                    description: itemInfo.description,
-                    acquiredDate: itemInfo.acquiredDate,
-                    isFavourite: itemInfo.isFavourite,
-                    imageUrl: '',
-                    tags: tagValues,
-                    category: {
-                        id: categoryId,
-                        name: newCategory.name,
-                        color: newCategory.color,
-                    },
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
+        addUserItem({
+            name: itemInfo.name,
+            description: itemInfo.description,
+            acquiredDate: itemInfo.acquiredDate,
+            isFavourite: itemInfo.isFavourite,
+            imageUrl: '',
+            tags: tagValues,
+            category: {
+                id: categoryId,
+                name: newCategory.name,
+                color: newCategory.color,
             },
-        ).then((response) => {
+        }).then((response) => {
             setIsCreating(false);
             if (response.ok) {
                 showNotification({

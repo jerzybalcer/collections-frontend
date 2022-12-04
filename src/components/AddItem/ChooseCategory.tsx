@@ -14,8 +14,8 @@ import {
 import { useQuery } from 'react-query';
 import { IconSquarePlus, IconVocabulary } from '@tabler/icons';
 import { AddItemContext, CategoryMode, NewCategory } from '../../context';
-import { SimpleCategory } from '../../model';
 import { areRecordsEqual, isUnique } from '../../helpers';
+import { getCategories, getTags } from '../../services';
 
 interface ChooseCategoryProps {
     nextStep: () => void;
@@ -31,27 +31,17 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
         setCategoryMode,
     } = useContext(AddItemContext);
 
-    const fetchCategories = async (): Promise<SimpleCategory[]> =>
-        fetch(`https://localhost:7185/api/categories`).then((response) =>
-            response.json(),
-        );
-
     const { data: categories, isLoading: categoriesLoading } = useQuery(
         `categories`,
-        fetchCategories,
+        getCategories,
     );
-
-    const fetchTags = async (): Promise<string[]> =>
-        fetch(`https://localhost:7185/api/tags`).then((response) =>
-            response.json(),
-        );
 
     const [errors, setErrors] = useState<Record<string, boolean>>({});
     const [tags, setTags] = useState<string[]>([]);
 
     const { data: fetchedTags, isLoading: tagsLoading } = useQuery(
         `tags`,
-        fetchTags,
+        getTags,
     );
 
     const currentMode = (): CategoryMode => {

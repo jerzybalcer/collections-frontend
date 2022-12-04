@@ -31,6 +31,6 @@ export interface NewItem {
     acquiredDate: string;
     isFavourite: boolean;
     imageUrl: string;
-    tags: TagValue;
+    tags: TagValue[];
     category: NewItemCategory;
 }
