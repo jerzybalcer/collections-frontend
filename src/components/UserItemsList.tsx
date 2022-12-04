@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { SimpleItem } from '../model';
 import { CategoryBadge } from './CategoryBadge';
 import { FavouriteButton } from './FavouriteButton';
+import { toggleItemIsFavourite } from '../services';
 
 interface UserItemsListProps {
     items: SimpleItem[];
@@ -18,9 +19,7 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
     const navigate = useNavigate();
 
     const toggleIsFavourite = (itemId: string) => {
-        fetch(`https://localhost:7185/api/item/${itemId}/favourite`, {
-            method: 'PUT',
-        }).then((response) => {
+        toggleItemIsFavourite(itemId).then((response) => {
             if (response.ok) {
                 refetchItems();
             }
