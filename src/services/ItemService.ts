@@ -6,13 +6,13 @@ export const getItemDetails = async (itemId: string): Promise<FullItem> =>
     fetch(`${baseUrl}/item/${itemId}`).then((response) => response.json());
 
 export const deleteItem = async (itemId: string): Promise<Response> =>
-    fetch(`https://localhost:7185/api/item/${itemId}`, {
+    fetch(`${baseUrl}/item/${itemId}`, {
         method: 'DELETE',
     });
 
 export const toggleItemIsFavourite = async (
     itemId: string,
 ): Promise<Response> =>
-    fetch(`https://localhost:7185/api/item/${itemId}/favourite`, {
+    fetch(`${baseUrl}/item/${itemId}/favourite`, {
         method: 'PUT',
     });
