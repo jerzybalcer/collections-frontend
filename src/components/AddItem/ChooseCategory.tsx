@@ -47,7 +47,10 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
     const currentMode = (): CategoryMode => {
         if (categoryMode) return categoryMode;
 
-        if (categories && categories.length === 0) return 'create';
+        if (categories && categories.length === 0) {
+            setCategoryMode('create');
+            return 'create';
+        }
 
         return undefined;
     };
