@@ -8,11 +8,14 @@ import {
     ScrollArea,
     Group,
     Button,
+    Text,
+    Image,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconPencilPlus } from '@tabler/icons';
 import { AddItemContext } from '../../context';
 import { areRecordsEqual } from '../../helpers';
+import { FileUpload } from '../FileUpload';
 
 interface DefineItemProps {
     nextStep: () => void;
@@ -26,6 +29,7 @@ export const DefineItem: React.FC<DefineItemProps> = ({
     const { itemInfo, setItemInfo } = useContext(AddItemContext);
 
     const [errors, setErrors] = useState<Record<string, boolean>>({});
+    const [file, setFile] = useState<File | undefined>(undefined);
 
     const onChangeName = (event: React.ChangeEvent<HTMLInputElement>): void => {
         if (event.currentTarget.value) setErrors({ ...errors, name: false });
@@ -87,7 +91,7 @@ export const DefineItem: React.FC<DefineItemProps> = ({
                 <IconPencilPlus />
                 <Title>Define item</Title>
             </Flex>
-            <ScrollArea sx={{ flexGrow: 1 }}>
+            <ScrollArea sx={{ flexGrow: 1 }} px="sm">
                 <TextInput
                     name="name"
                     placeholder="Enter name"
@@ -123,10 +127,14 @@ export const DefineItem: React.FC<DefineItemProps> = ({
                     value={itemInfo.description ?? ''}
                     onChange={onChangeDescription}
                 />
+
+                <FileUpload onUpload={() => {}} onDelete={() => {}} />
+
                 <Checkbox
                     name="isFavourite"
                     label="Set as favourite"
                     size="lg"
+                    mt="lg"
                     checked={itemInfo.isFavourite ?? false}
                     onChange={onChangeIsFavourite}
                 />

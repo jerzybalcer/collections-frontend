@@ -5,3 +5,5 @@ export * from './ItemDetails/ItemInfo';
 export * from './ItemDetails/ItemTagsList';
 export * from './CategoryBadge';
 export * from './FavouriteButton';
+export * from './FileUploadDropzone';
+export * from './FileUpload';
