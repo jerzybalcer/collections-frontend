@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import { Flex, Text, Card, ScrollArea } from '@mantine/core';
+import { Flex, Text, Card, ScrollArea, TextInput } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { IconSearch } from '@tabler/icons';
 import { SimpleItem } from '../model';
 import { CategoryBadge } from './CategoryBadge';
 import { FavouriteButton } from './FavouriteButton';
@@ -26,10 +27,41 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
         });
     };
 
+    const [visibleItems, setVisibleItems] = useState<SimpleItem[]>(items);
+
+    const onChangeSearchPhrase = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ): void => {
+        const searchPhrase = event.currentTarget.value;
+
+        if (!searchPhrase) setVisibleItems(items);
+        else {
+            const matchingItems = items.filter(
+                (item) =>
+                    item.name
+                        .toLowerCase()
+                        .includes(searchPhrase.toLowerCase()) ||
+                    item.category.name
+                        .toLowerCase()
+                        .includes(searchPhrase.toLowerCase()),
+            );
+            setVisibleItems(matchingItems);
+        }
+    };
+
     return (
         <ScrollArea h="75%" w="100%">
             <Flex direction="column" w="100%" h="100%" pt="lg">
-                {items.map((item: SimpleItem) => (
+                <TextInput
+                    name="search"
+                    placeholder="Search"
+                    size="lg"
+                    mb="lg"
+                    mr="auto"
+                    onChange={onChangeSearchPhrase}
+                    icon={<IconSearch />}
+                />
+                {visibleItems.map((item: SimpleItem) => (
                     <Card
                         shadow="sm"
                         p="lg"
