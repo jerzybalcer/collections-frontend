@@ -6,6 +6,7 @@ interface ItemInfo {
     description: string;
     acquiredDate: string;
     isFavourite: boolean;
+    imageBase64: string | null;
 }
 
 export interface NewCategory {

@@ -8,13 +8,11 @@ import {
     ScrollArea,
     Group,
     Button,
-    Text,
-    Image,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconPencilPlus } from '@tabler/icons';
 import { AddItemContext } from '../../context';
-import { areRecordsEqual } from '../../helpers';
+import { areRecordsEqual, fileToBase64 } from '../../helpers';
 import { FileUpload } from '../FileUpload';
 
 interface DefineItemProps {
@@ -29,7 +27,6 @@ export const DefineItem: React.FC<DefineItemProps> = ({
     const { itemInfo, setItemInfo } = useContext(AddItemContext);
 
     const [errors, setErrors] = useState<Record<string, boolean>>({});
-    const [file, setFile] = useState<File | undefined>(undefined);
 
     const onChangeName = (event: React.ChangeEvent<HTMLInputElement>): void => {
         if (event.currentTarget.value) setErrors({ ...errors, name: false });
@@ -61,6 +58,11 @@ export const DefineItem: React.FC<DefineItemProps> = ({
         const changedItem = { ...itemInfo };
         changedItem.isFavourite = event.currentTarget.checked;
         setItemInfo(changedItem);
+    };
+
+    const onImageUpload = async (uploadedFile: File) => {
+        const imageBase64 = await fileToBase64(uploadedFile);
+        setItemInfo({ ...itemInfo, imageBase64 });
     };
 
     const isValid = (): boolean => {
@@ -128,7 +130,12 @@ export const DefineItem: React.FC<DefineItemProps> = ({
                     onChange={onChangeDescription}
                 />
 
-                <FileUpload onUpload={() => {}} onDelete={() => {}} />
+                <FileUpload
+                    onUpload={(file) => onImageUpload(file)}
+                    onDelete={() =>
+                        setItemInfo({ ...itemInfo, imageBase64: null })
+                    }
+                />
 
                 <Checkbox
                     name="isFavourite"

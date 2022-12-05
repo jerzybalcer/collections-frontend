@@ -4,7 +4,7 @@ import { IconTrash } from '@tabler/icons';
 import { FileUploadDropzone } from './FileUploadDropzone';
 
 interface FileUploadProps {
-    onUpload: () => void;
+    onUpload: (uploadedFile: File) => void;
     onDelete: () => void;
 }
 
@@ -43,7 +43,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             )}
             {!file && (
                 <FileUploadDropzone
-                    onUpload={(uploadedFile) => setFile(uploadedFile)}
+                    onUpload={(uploadedFile) => {
+                        setFile(uploadedFile);
+                        onUpload(uploadedFile);
+                    }}
                 />
             )}
         </Flex>
