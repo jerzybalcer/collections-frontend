@@ -30,7 +30,7 @@ export interface NewItem {
     description: string | null;
     acquiredDate: string;
     isFavourite: boolean;
-    imageUrl: string;
+    imageBase64: string | null;
     tags: TagValue[];
     category: NewItemCategory;
 }

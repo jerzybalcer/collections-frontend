@@ -62,7 +62,10 @@ export const DefineItem: React.FC<DefineItemProps> = ({
 
     const onImageUpload = async (uploadedFile: File) => {
         const imageBase64 = await fileToBase64(uploadedFile);
-        setItemInfo({ ...itemInfo, imageBase64 });
+
+        const base64Content = imageBase64 ? imageBase64.split(',')[1] : null;
+
+        setItemInfo({ ...itemInfo, imageBase64: base64Content });
     };
 
     const isValid = (): boolean => {

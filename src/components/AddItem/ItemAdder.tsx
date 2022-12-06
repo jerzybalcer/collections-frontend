@@ -43,7 +43,7 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
             description: itemInfo.description,
             acquiredDate: itemInfo.acquiredDate,
             isFavourite: itemInfo.isFavourite,
-            imageUrl: '',
+            imageBase64: itemInfo.imageBase64,
             tags: tagValues,
             category: {
                 id: categoryId,
