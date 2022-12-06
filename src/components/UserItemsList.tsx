@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Flex, Text, Card, ScrollArea, TextInput } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,8 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
             setVisibleItems(matchingItems);
         }
     };
+
+    useEffect(() => setVisibleItems(items), [items]);
 
     return (
         <ScrollArea h="75%" w="100%">
