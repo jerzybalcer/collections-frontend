@@ -24,6 +24,7 @@ export const FileUploadDropzone: React.FC<FileUploadDropzoneProps> = ({
                 onReject={() => setUploadError(true)}
                 accept={IMAGE_MIME_TYPE}
                 maxFiles={1}
+                maxSize={1024 ** 2 * 5}
                 style={{ borderColor: uploadError ? 'red' : '' }}
                 py="xl"
             >
@@ -58,9 +59,14 @@ export const FileUploadDropzone: React.FC<FileUploadDropzoneProps> = ({
                         <IconPhoto size={50} stroke={1.5} />
                     </Dropzone.Idle>
 
-                    <Text size="xl" inline>
-                        Drag image here or click to select file
-                    </Text>
+                    <Flex direction="column" gap="xs">
+                        <Text size="xl" inline>
+                            Drag image here or click to select file
+                        </Text>
+                        <Text size="md" inline color="dimmed" align="center">
+                            Only image files up to 5 MB
+                        </Text>
+                    </Flex>
                 </Group>
             </Dropzone>
             {uploadError && (
