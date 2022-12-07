@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import {
     Title,
@@ -9,8 +9,11 @@ import {
     Flex,
     ActionIcon,
     ScrollArea,
+    Image,
+    Paper,
+    Loader,
 } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons';
+import { IconEdit, IconPhotoX, IconTrash } from '@tabler/icons';
 import { FullItem } from '../../model';
 import { FavouriteButton } from '../FavouriteButton';
 
@@ -31,6 +34,9 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({
     deleteItem,
     likeItem,
 }) => {
+    const [imageError, setImageError] = useState<boolean>(false);
+    const [imageLoading, setImageLoading] = useState<boolean>(true);
+
     return (
         <Flex direction="column" w="50%" mih="50%">
             <Modal
@@ -83,27 +89,52 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({
                         </ActionIcon>
                     </Flex>
                 </Card.Section>
-                <Flex direction="column" mb="xs" h="30%">
-                    <Box
+                {!imageError && (
+                    <Flex
+                        mb="sm"
+                        justify="center"
+                        align="center"
                         style={{
-                            maxHeight: '100%',
-                            marginRight: 'auto',
-                            cursor: 'zoom-in',
+                            objectFit: 'cover',
+                            width: '400px',
+                            height: '400px',
                         }}
                         onClick={() => showFullSizeImage(true)}
                     >
                         <img
                             src={itemDetails.imageUrl}
                             alt=""
+                            width={400}
+                            height={400}
                             style={{
-                                objectFit: 'cover',
-                                maxHeight: '100%',
-                                maxWidth: '100%',
                                 borderRadius: '10px',
+                                objectFit: 'cover',
+                                cursor: 'zoom-in',
+                                display: imageLoading ? 'none' : 'block',
                             }}
+                            onError={() => setImageError(true)}
+                            onLoad={() => setImageLoading(false)}
                         />
-                    </Box>
-                </Flex>
+                        {imageLoading && <Loader size="md" />}
+                    </Flex>
+                )}
+                {imageError && (
+                    <Card withBorder w={400} h={400} mb="sm" radius="md">
+                        <Flex
+                            direction="column"
+                            align="center"
+                            justify="center"
+                            style={{
+                                color: 'gray',
+                            }}
+                            h="100%"
+                            w="100%"
+                        >
+                            <IconPhotoX size={100} style={{ strokeWidth: 1 }} />
+                            <Text>Image not available</Text>
+                        </Flex>
+                    </Card>
+                )}
                 <ScrollArea h="60%">
                     <Flex h="40%" direction="column">
                         <Title order={2} mb="xs">
