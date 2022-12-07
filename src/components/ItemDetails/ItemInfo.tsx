@@ -99,7 +99,7 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({
                             width: '400px',
                             height: '400px',
                         }}
-                        onClick={() => showFullSizeImage(true)}
+                        onClick={() => showFullSizeImage(!imageLoading)}
                     >
                         <img
                             src={itemDetails.imageUrl}
