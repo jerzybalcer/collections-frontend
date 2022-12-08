@@ -8,7 +8,6 @@ import { ItemInfo, ItemTagsList } from '../components';
 import { getItemDetails, deleteItem, toggleItemIsFavourite } from '../services';
 
 export const ItemDetails: React.FC = () => {
-    const [fullSizeImage, showFullSizeImage] = useState<boolean>(false);
     const [deleteModalVisible, showDeleteModal] = useState<boolean>(false);
 
     const navigate = useNavigate();
@@ -87,8 +86,6 @@ export const ItemDetails: React.FC = () => {
                     <>
                         <ItemInfo
                             itemDetails={itemDetails}
-                            fullSizeImage={fullSizeImage}
-                            showFullSizeImage={showFullSizeImage}
                             editItem={() => {}}
                             likeItem={() => toggleIsFavourite()}
                             deleteItem={() => showDeleteModal(true)}
