@@ -36,6 +36,7 @@
             {
                 "endOfLine": "auto"
             }
-        ]
+        ],
+        "react/require-default-props": [0]
     }
 }

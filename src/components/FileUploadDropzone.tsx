@@ -15,7 +15,7 @@ export const FileUploadDropzone: React.FC<FileUploadDropzoneProps> = ({
     const [uploadError, setUploadError] = useState<boolean>(false);
 
     return (
-        <Flex direction="column">
+        <Flex direction="column" h="100%">
             <Dropzone
                 onDrop={(files) => {
                     setUploadError(false);
@@ -25,13 +25,22 @@ export const FileUploadDropzone: React.FC<FileUploadDropzoneProps> = ({
                 accept={IMAGE_MIME_TYPE}
                 maxFiles={1}
                 maxSize={1024 ** 2 * 5}
-                style={{ borderColor: uploadError ? 'red' : '' }}
+                style={{
+                    borderColor: uploadError ? 'red' : '',
+                }}
                 py="xl"
+                sx={{ flex: 1, '.mantine-Dropzone-inner': { height: '100%' } }}
             >
-                <Group
-                    position="center"
-                    spacing="xl"
-                    style={{ pointerEvents: 'none' }}
+                <Flex
+                    direction="column"
+                    justify="center"
+                    align="center"
+                    gap="sm"
+                    style={{
+                        pointerEvents: 'none',
+                        margin: 'auto',
+                        height: '100%',
+                    }}
                 >
                     <Dropzone.Accept>
                         <IconUpload
@@ -60,14 +69,14 @@ export const FileUploadDropzone: React.FC<FileUploadDropzoneProps> = ({
                     </Dropzone.Idle>
 
                     <Flex direction="column" gap="xs">
-                        <Text size="xl" inline>
+                        <Text size="xl" inline align="center">
                             Drag image here or click to select file
                         </Text>
                         <Text size="md" inline color="dimmed" align="center">
                             Only image files up to 5 MB
                         </Text>
                     </Flex>
-                </Group>
+                </Flex>
             </Dropzone>
             {uploadError && (
                 <Text color="red" mt="xs">

@@ -134,6 +134,7 @@ export const DefineItem: React.FC<DefineItemProps> = ({
                 />
 
                 <FileUpload
+                    withTitle
                     onUpload={(file) => onImageUpload(file)}
                     onDelete={() =>
                         setItemInfo({ ...itemInfo, imageBase64: null })

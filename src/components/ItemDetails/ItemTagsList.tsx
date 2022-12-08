@@ -8,6 +8,7 @@ import {
     ScrollArea,
     Paper,
     Tooltip,
+    TextInput,
 } from '@mantine/core';
 import { IconAlertTriangle } from '@tabler/icons';
 import { FullItemCategory, TagValue } from '../../model';
@@ -16,11 +17,13 @@ import { CategoryBadge } from '../CategoryBadge';
 interface ItemTagsListProps {
     category: FullItemCategory;
     tagValues: TagValue[];
+    editing: boolean;
 }
 
 export const ItemTagsList: React.FC<ItemTagsListProps> = ({
     category,
     tagValues,
+    editing,
 }) => {
     return (
         <Card shadow="sm" p="lg" radius="md" withBorder w="50%" mih="50%">
@@ -65,9 +68,21 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
                                         )}
                                     </Flex>
 
-                                    {tagValue ? (
+                                    {editing && (
+                                        <TextInput
+                                            defaultValue={
+                                                tagValue
+                                                    ? tagValue.value
+                                                    : undefined
+                                            }
+                                        />
+                                    )}
+
+                                    {!editing && tagValue && (
                                         <Text fz="lg">{tagValue.value}</Text>
-                                    ) : (
+                                    )}
+
+                                    {!editing && !tagValue && (
                                         <Text
                                             fz="lg"
                                             color="dimmed"
