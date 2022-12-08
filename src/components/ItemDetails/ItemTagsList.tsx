@@ -75,6 +75,7 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
                                                     ? tagValue.value
                                                     : undefined
                                             }
+                                            size="md"
                                         />
                                     )}
 

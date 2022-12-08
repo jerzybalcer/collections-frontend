@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
-import { Group, Text, Flex, useMantineTheme } from '@mantine/core';
+import { Text, Flex, useMantineTheme } from '@mantine/core';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons';
 
 interface FileUploadDropzoneProps {

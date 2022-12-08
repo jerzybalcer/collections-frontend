@@ -6,9 +6,7 @@ import {
     Button,
     Loader,
     ActionIcon,
-    Card,
     Paper,
-    Transition,
 } from '@mantine/core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
