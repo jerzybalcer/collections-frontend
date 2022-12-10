@@ -34,3 +34,11 @@ export interface NewItem {
     tags: TagValue[];
     category: NewItemCategory;
 }
+
+export interface EditedItem {
+    name: string | null;
+    description: string | null;
+    acquiredDate: string | null;
+    imageBase64: string | null;
+    tags: TagValue[];
+}

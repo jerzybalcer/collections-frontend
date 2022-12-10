@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Modal,
     Title,
@@ -20,7 +20,13 @@ import {
     IconX,
 } from '@tabler/icons';
 import { FavouriteButton, ItemInfo, ItemTagsList } from '../components';
-import { getItemDetails, deleteItem, toggleItemIsFavourite } from '../services';
+import {
+    getItemDetails,
+    deleteItem,
+    toggleItemIsFavourite,
+    editItem,
+} from '../services';
+import { EditItemContext } from '../context';
 
 export const ItemDetails: React.FC = () => {
     const [deleteModalVisible, showDeleteModal] = useState<boolean>(false);
@@ -28,6 +34,9 @@ export const ItemDetails: React.FC = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
+
+    const { reset, name, description, acquiredDate, imageBase64, tagValues } =
+        useContext(EditItemContext);
 
     const {
         data: itemDetails,
@@ -55,6 +64,28 @@ export const ItemDetails: React.FC = () => {
     const toggleIsFavourite = () => {
         toggleItemIsFavourite(id as string).then((response) => {
             if (response.ok) {
+                refetchItemDetails();
+            }
+        });
+    };
+
+    const saveEditedItem = () => {
+        editItem(id as string, {
+            name: name ?? null,
+            description: description ?? null,
+            acquiredDate: acquiredDate ?? null,
+            imageBase64: imageBase64 ?? null,
+            tags: tagValues,
+        }).then((response) => {
+            if (response.ok) {
+                showNotification({
+                    title: 'Success!',
+                    message: 'Item edited successfully',
+                    color: 'teal',
+                    icon: <IconCheck size={16} />,
+                });
+                setEditing(false);
+                reset();
                 refetchItemDetails();
             }
         });
@@ -105,11 +136,18 @@ export const ItemDetails: React.FC = () => {
                                         <ActionIcon
                                             size="xl"
                                             color="red.9"
-                                            onClick={() => setEditing(false)}
+                                            onClick={() => {
+                                                setEditing(false);
+                                                reset();
+                                            }}
                                         >
                                             <IconX />
                                         </ActionIcon>
-                                        <ActionIcon size="xl" color="blue">
+                                        <ActionIcon
+                                            size="xl"
+                                            color="blue"
+                                            onClick={() => saveEditedItem()}
+                                        >
                                             <IconDeviceFloppy />
                                         </ActionIcon>
                                     </>

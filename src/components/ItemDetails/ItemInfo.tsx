@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import dayjs from 'dayjs';
 import {
     Title,
@@ -13,6 +13,8 @@ import { DatePicker } from '@mantine/dates';
 import { FullItem } from '../../model';
 import { ItemImage } from '../ItemImage';
 import { FileUpload } from '../FileUpload';
+import { EditItemContext } from '../../context';
+import { fileToBase64 } from '../../helpers';
 
 interface ItemInfoProps {
     itemDetails: FullItem;
@@ -20,6 +22,24 @@ interface ItemInfoProps {
 }
 
 export const ItemInfo: React.FC<ItemInfoProps> = ({ itemDetails, editing }) => {
+    const { setName, setDescription, setImageBase64, setAcquiredDate } =
+        useContext(EditItemContext);
+
+    const onNameEdit = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setName(e.currentTarget.value);
+
+    const onDescriptionEdit = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+        setDescription(e.currentTarget.value);
+
+    const onAcquiredDateEdit = (value: Date | null) =>
+        setAcquiredDate(value?.toISOString() ?? null);
+
+    const onImageEdit = async (file: File) => {
+        const imageBase64 = await fileToBase64(file);
+        const base64Content = imageBase64 ? imageBase64.split(',')[1] : null;
+        setImageBase64(base64Content);
+    };
+
     return (
         <Card shadow="sm" p="lg" radius="md" withBorder w="50%" mih="50%">
             <ScrollArea h="100%" px="sm">
@@ -27,7 +47,10 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({ itemDetails, editing }) => {
                     <ItemImage imageUrl={itemDetails.imageUrl} />
                 ) : (
                     <Flex w={400} h={400} mb="sm">
-                        <FileUpload onUpload={() => {}} onDelete={() => {}} />
+                        <FileUpload
+                            onUpload={onImageEdit}
+                            onDelete={() => setImageBase64(null)}
+                        />
                     </Flex>
                 )}
 
@@ -49,6 +72,7 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({ itemDetails, editing }) => {
                                 mb="xs"
                                 defaultValue={itemDetails.name}
                                 size="lg"
+                                onChange={onNameEdit}
                             />
                             <Textarea
                                 mb="lg"
@@ -57,6 +81,7 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({ itemDetails, editing }) => {
                                 }
                                 size="md"
                                 minRows={10}
+                                onChange={onDescriptionEdit}
                             />
                         </>
                     )}
@@ -81,25 +106,19 @@ export const ItemInfo: React.FC<ItemInfoProps> = ({ itemDetails, editing }) => {
                                     defaultValue={
                                         new Date(itemDetails.acquiredDate)
                                     }
+                                    onChange={onAcquiredDateEdit}
                                 />
                             )}
                         </Flex>
 
                         <Flex direction="column">
                             <Title order={4}>Added</Title>
-                            {!editing ? (
-                                <Text>
-                                    {dayjs(itemDetails.addedDate).format(
-                                        'DD MMMM YYYY',
-                                    )}
-                                </Text>
-                            ) : (
-                                <DatePicker
-                                    defaultValue={
-                                        new Date(itemDetails.addedDate)
-                                    }
-                                />
-                            )}
+
+                            <Text>
+                                {dayjs(itemDetails.addedDate).format(
+                                    'DD MMMM YYYY',
+                                )}
+                            </Text>
                         </Flex>
                     </Flex>
                 </Flex>

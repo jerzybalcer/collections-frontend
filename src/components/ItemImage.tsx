@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Card, Flex, Loader, Modal, Text } from '@mantine/core';
 import { IconPhotoX } from '@tabler/icons';
 
@@ -10,6 +10,13 @@ export const ItemImage: React.FC<ItemImageProps> = ({ imageUrl }) => {
     const [imageError, setImageError] = useState<boolean>(false);
     const [imageLoading, setImageLoading] = useState<boolean>(true);
     const [fullSizeImage, showFullSizeImage] = useState<boolean>(false);
+
+    // reload image after error
+    useEffect(() => {
+        if (imageError && imageUrl) {
+            setImageError(false);
+        }
+    }, [imageError, imageUrl]);
 
     return (
         <Box>

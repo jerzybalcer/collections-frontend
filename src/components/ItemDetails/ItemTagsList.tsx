@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     Flex,
     Text,
@@ -13,6 +13,7 @@ import {
 import { IconAlertTriangle } from '@tabler/icons';
 import { FullItemCategory, TagValue } from '../../model';
 import { CategoryBadge } from '../CategoryBadge';
+import { EditItemContext } from '../../context';
 
 interface ItemTagsListProps {
     category: FullItemCategory;
@@ -25,6 +26,27 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
     tagValues,
     editing,
 }) => {
+    const { setTagValues, tagValues: editedTagValues } =
+        useContext(EditItemContext);
+
+    const onEditTagValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const tagName = e.currentTarget.name;
+        const tagValue = e.currentTarget.value;
+
+        const tagIndex = editedTagValues.findIndex((tv) => tv.name === tagName);
+
+        if (tagIndex === -1) {
+            setTagValues([
+                ...editedTagValues,
+                { name: tagName, value: tagValue },
+            ]);
+        } else {
+            const newTagValues = [...editedTagValues];
+            newTagValues[tagIndex].value = tagValue;
+            setTagValues(newTagValues);
+        }
+    };
+
     return (
         <Card shadow="sm" p="lg" radius="md" withBorder w="50%" mih="50%">
             <ScrollArea h="100%">
@@ -55,7 +77,7 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
                                         <Text fw={500} fz="lg">
                                             {tag}
                                         </Text>
-                                        {!tagValue && (
+                                        {(!tagValue || !tagValue.value) && (
                                             <Tooltip
                                                 label="This tag has no value yet"
                                                 withArrow
@@ -70,12 +92,14 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
 
                                     {editing && (
                                         <TextInput
+                                            name={tag}
                                             defaultValue={
                                                 tagValue
                                                     ? tagValue.value
                                                     : undefined
                                             }
                                             size="md"
+                                            onChange={onEditTagValue}
                                         />
                                     )}
 
@@ -83,15 +107,16 @@ export const ItemTagsList: React.FC<ItemTagsListProps> = ({
                                         <Text fz="lg">{tagValue.value}</Text>
                                     )}
 
-                                    {!editing && !tagValue && (
-                                        <Text
-                                            fz="lg"
-                                            color="dimmed"
-                                            fs="italic"
-                                        >
-                                            No value yet
-                                        </Text>
-                                    )}
+                                    {!editing &&
+                                        (!tagValue || !tagValue?.value) && (
+                                            <Text
+                                                fz="lg"
+                                                color="dimmed"
+                                                fs="italic"
+                                            >
+                                                No value yet
+                                            </Text>
+                                        )}
                                 </Paper>
                             </Flex>
                         );
