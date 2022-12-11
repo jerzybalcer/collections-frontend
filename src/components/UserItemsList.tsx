@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Flex, Text, Card, ScrollArea, TextInput } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { IconSearch } from '@tabler/icons';
+import {
+    IconHandGrab,
+    IconMoneybag,
+    IconPencilPlus,
+    IconPlus,
+    IconSearch,
+    IconUserPlus,
+} from '@tabler/icons';
 import { SimpleItem } from '../model';
 import { CategoryBadge } from './CategoryBadge';
 import { FavouriteButton } from './FavouriteButton';
@@ -85,17 +92,27 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
                             />
                         </Flex>
 
-                        <Text weight={500} fz="xl" mb="xs">
+                        <Text weight={500} fz="xl" mb="sm">
                             {item.name}
                         </Text>
 
-                        <Text size="md" color="dimmed">
-                            {dayjs(item.addedDate).format('DD MMMM YYYY')}
-                        </Text>
+                        <Flex>
+                            <IconPencilPlus color="gray" />
+                            <Text size="md" color="dimmed" ml="xs">
+                                {`${dayjs(item.addedDate).format(
+                                    'DD MMMM YYYY',
+                                )}`}
+                            </Text>
+                        </Flex>
 
-                        <Text size="md" color="dimmed">
-                            {dayjs(item.acquiredDate).format('DD MMMM YYYY')}{' '}
-                        </Text>
+                        <Flex>
+                            <IconUserPlus color="gray" />
+                            <Text size="md" color="dimmed" ml="xs">
+                                {`${dayjs(item.acquiredDate).format(
+                                    'DD MMMM YYYY',
+                                )}`}
+                            </Text>
+                        </Flex>
                     </Card>
                 ))}
             </Flex>
