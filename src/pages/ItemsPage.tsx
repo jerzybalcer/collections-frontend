@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Loader, Title, Box, Flex, Button } from '@mantine/core';
 import { useQuery } from 'react-query';
-import { ItemAdder, UserItemsList } from '../components';
+import { UserItemsList } from '../components';
 import { getUserItems } from '../services';
+import { ItemAdder } from '../components/AddItem';
 
 export const ItemsPage: React.FC = () => {
     const [isAddDrawerOpen, setIsAddDrawerOpen] = useState<boolean>(false);

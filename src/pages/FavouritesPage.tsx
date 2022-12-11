@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Loader, Title, Box, Flex, Button } from '@mantine/core';
 import { useQuery } from 'react-query';
-import { ItemAdder, UserItemsList } from '../components';
+import { UserItemsList } from '../components';
 import { getUserFavouriteItems } from '../services';
 import { AddItemContext } from '../context';
+import { ItemAdder } from '../components/AddItem';
 
 export const FavouritesPage: React.FC = () => {
     const [isAddDrawerOpen, setIsAddDrawerOpen] = useState<boolean>(false);

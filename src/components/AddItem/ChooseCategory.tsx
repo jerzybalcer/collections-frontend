@@ -180,7 +180,10 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
                                 placeholder="Pick one"
                                 withAsterisk
                                 data={categories.map((c) => {
-                                    return { label: c.name, value: c.id };
+                                    return {
+                                        label: c.name,
+                                        value: c.id,
+                                    };
                                 })}
                                 size="lg"
                                 value={categoryId}
