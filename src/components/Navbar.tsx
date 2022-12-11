@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     ActionIcon,
-    Burger,
     Button,
     CloseButton,
     Drawer,
@@ -20,26 +19,34 @@ export const Navbar: React.FC = () => {
 
     window.addEventListener('resize', () => setWindowWidth(window.innerWidth));
 
+    const onPageSelected = (page: string): void => {
+        setDrawerOpened(false);
+        navigate(`/${page}`);
+    };
+
     const pagesButtons = (direction: 'row' | 'column'): JSX.Element => (
         <Flex direction={direction}>
             <Button
+                name="items"
                 variant="subtle"
                 size="xl"
-                onClick={() => navigate('/items')}
+                onClick={(ev) => onPageSelected(ev.currentTarget.name)}
             >
                 Items
             </Button>
             <Button
+                name="favourites"
                 variant="subtle"
                 size="xl"
-                onClick={() => navigate('/favourites')}
+                onClick={(ev) => onPageSelected(ev.currentTarget.name)}
             >
                 Favourites
             </Button>
             <Button
+                name="categories"
                 variant="subtle"
                 size="xl"
-                onClick={() => navigate('/categories')}
+                onClick={(ev) => onPageSelected(ev.currentTarget.name)}
             >
                 Categories
             </Button>

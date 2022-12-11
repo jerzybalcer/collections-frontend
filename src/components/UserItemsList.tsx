@@ -2,14 +2,7 @@ import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Flex, Text, Card, ScrollArea, TextInput } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import {
-    IconHandGrab,
-    IconMoneybag,
-    IconPencilPlus,
-    IconPlus,
-    IconSearch,
-    IconUserPlus,
-} from '@tabler/icons';
+import { IconPencilPlus, IconSearch, IconUserPlus } from '@tabler/icons';
 import { SimpleItem } from '../model';
 import { CategoryBadge } from './CategoryBadge';
 import { FavouriteButton } from './FavouriteButton';

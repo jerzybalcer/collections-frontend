@@ -8,3 +8,4 @@ export * from './FavouriteButton';
 export * from './FileUploadDropzone';
 export * from './FileUpload';
 export * from './ItemImage';
+export * from './CategoriesList';
