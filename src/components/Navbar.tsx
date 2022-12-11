@@ -1,32 +1,110 @@
-import React from 'react';
-import { Flex, Title } from '@mantine/core';
+import React, { useState } from 'react';
+import {
+    ActionIcon,
+    Burger,
+    Button,
+    CloseButton,
+    Drawer,
+    Flex,
+    Text,
+    Title,
+} from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { IconMenu2, IconUserCircle } from '@tabler/icons';
 
 export const Navbar: React.FC = () => {
     const navigate = useNavigate();
 
+    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+    const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
+
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth));
+
     return (
-        <Flex
-            w="100%"
-            mb="xl"
-            pb="xs"
-            sx={{
-                borderStyle: 'solid',
-                borderWidth: '0 0 1px 0',
-                boxShadow: '0 0 5px 0',
-                borderColor: 'lightgray',
-            }}
-            bg="white"
-        >
-            <Title
-                order={1}
-                color="blue"
-                p="0.5rem"
-                style={{ cursor: 'pointer' }}
-                onClick={() => navigate('/')}
+        <Flex direction="column" sx={{ position: 'relative' }}>
+            <Flex
+                w="100%"
+                mb="xl"
+                sx={{
+                    borderStyle: 'solid',
+                    borderWidth: '0 0 1px 0',
+                    boxShadow: '0 0 5px 0',
+                    borderColor: 'lightgray',
+                    zIndex: 201,
+                }}
+                bg="white"
+                align="center"
+                justify="space-between"
             >
-                Collections
-            </Title>
+                <Title
+                    order={1}
+                    color="blue"
+                    p="0.5rem"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate('/')}
+                >
+                    Collections
+                </Title>
+
+                {windowWidth > 800 ? (
+                    <>
+                        <Flex>
+                            <Button variant="subtle" size="xl">
+                                Items
+                            </Button>
+                            <Button variant="subtle" size="xl">
+                                Favourites
+                            </Button>
+                            <Button variant="subtle" size="xl">
+                                Categories
+                            </Button>
+                        </Flex>
+                        <Flex align="center">
+                            <Button variant="subtle" size="xl">
+                                <IconUserCircle size={40} strokeWidth={1.5} />
+                                <Text size="xl" ml="xs">
+                                    Test User
+                                </Text>
+                            </Button>
+                        </Flex>
+                    </>
+                ) : (
+                    <ActionIcon
+                        mr="xs"
+                        variant="subtle"
+                        color="blue"
+                        size="xl"
+                        onClick={() => setDrawerOpened(!drawerOpened)}
+                    >
+                        <IconMenu2 />
+                    </ActionIcon>
+                )}
+            </Flex>
+            <Drawer
+                opened={drawerOpened}
+                onClose={() => setDrawerOpened(false)}
+                withCloseButton={false}
+                position="right"
+                sx={{ '.mantine-Drawer-root': { position: 'fixed' } }}
+            >
+                <Flex direction="column">
+                    <CloseButton
+                        color="blue"
+                        size="xl"
+                        ml="auto"
+                        onClick={() => setDrawerOpened(false)}
+                    />
+                    <Button variant="subtle" size="xl">
+                        Items
+                    </Button>
+                    <Button variant="subtle" size="xl">
+                        Favourites
+                    </Button>
+                    <Button variant="subtle" size="xl">
+                        Categories
+                    </Button>
+                </Flex>
+            </Drawer>
         </Flex>
     );
 };

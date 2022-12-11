@@ -59,7 +59,7 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
                     placeholder="Search"
                     size="lg"
                     mb="lg"
-                    mr="auto"
+                    maw={300}
                     onChange={onChangeSearchPhrase}
                     icon={<IconSearch />}
                 />
