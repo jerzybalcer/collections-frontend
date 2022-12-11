@@ -1,2 +1,3 @@
 export * from './ItemsPage';
-export * from './ItemDetails';
+export * from './ItemDetailsPage';
+export * from './FavouritesPage';

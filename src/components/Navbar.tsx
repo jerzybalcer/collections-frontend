@@ -20,6 +20,32 @@ export const Navbar: React.FC = () => {
 
     window.addEventListener('resize', () => setWindowWidth(window.innerWidth));
 
+    const pagesButtons = (direction: 'row' | 'column'): JSX.Element => (
+        <Flex direction={direction}>
+            <Button
+                variant="subtle"
+                size="xl"
+                onClick={() => navigate('/items')}
+            >
+                Items
+            </Button>
+            <Button
+                variant="subtle"
+                size="xl"
+                onClick={() => navigate('/favourites')}
+            >
+                Favourites
+            </Button>
+            <Button
+                variant="subtle"
+                size="xl"
+                onClick={() => navigate('/categories')}
+            >
+                Categories
+            </Button>
+        </Flex>
+    );
+
     return (
         <Flex direction="column" sx={{ position: 'relative' }}>
             <Flex
@@ -48,17 +74,7 @@ export const Navbar: React.FC = () => {
 
                 {windowWidth > 800 ? (
                     <>
-                        <Flex>
-                            <Button variant="subtle" size="xl">
-                                Items
-                            </Button>
-                            <Button variant="subtle" size="xl">
-                                Favourites
-                            </Button>
-                            <Button variant="subtle" size="xl">
-                                Categories
-                            </Button>
-                        </Flex>
+                        {pagesButtons('row')}
                         <Flex align="center">
                             <Button variant="subtle" size="xl">
                                 <IconUserCircle size={40} strokeWidth={1.5} />
@@ -94,15 +110,7 @@ export const Navbar: React.FC = () => {
                         ml="auto"
                         onClick={() => setDrawerOpened(false)}
                     />
-                    <Button variant="subtle" size="xl">
-                        Items
-                    </Button>
-                    <Button variant="subtle" size="xl">
-                        Favourites
-                    </Button>
-                    <Button variant="subtle" size="xl">
-                        Categories
-                    </Button>
+                    {pagesButtons('column')}
                 </Flex>
             </Drawer>
         </Flex>
