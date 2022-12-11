@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Loader, Title, Box, Flex, Button } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { ItemAdder, UserItemsList } from '../components';
 import { getUserFavouriteItems } from '../services';
+import { AddItemContext } from '../context';
 
 export const FavouritesPage: React.FC = () => {
     const [isAddDrawerOpen, setIsAddDrawerOpen] = useState<boolean>(false);
+    const { setItemInfo, itemInfo } = useContext(AddItemContext);
 
     const {
         data: items,
@@ -28,7 +30,10 @@ export const FavouritesPage: React.FC = () => {
                     ml="auto"
                     my="md"
                     display="block"
-                    onClick={() => setIsAddDrawerOpen(true)}
+                    onClick={() => {
+                        setIsAddDrawerOpen(true);
+                        setItemInfo({ ...itemInfo, isFavourite: true });
+                    }}
                 >
                     Add Item
                 </Button>
