@@ -103,9 +103,12 @@ export const FillTags: React.FC<FillTagsProps> = ({
                 <Title>Fill in tags values</Title>
             </Flex>
 
-            {tagsLoading && <Loader size="lg" mt="10rem" />}
-            {!tagsLoading && (
-                <ScrollArea sx={{ flexGrow: 1 }}>
+            <Flex
+                direction="column"
+                sx={{ flexGrow: 1, overflowY: 'auto', height: '100px' }}
+            >
+                {tagsLoading && <Loader size="lg" mt="10rem" />}
+                {!tagsLoading && (
                     <Flex direction="column">
                         {tagsSource().map((tag) => (
                             <TextInput
@@ -129,9 +132,8 @@ export const FillTags: React.FC<FillTagsProps> = ({
                             />
                         ))}
                     </Flex>
-                </ScrollArea>
-            )}
-
+                )}
+            </Flex>
             <Group position="right" my="xl">
                 <Button
                     variant="default"

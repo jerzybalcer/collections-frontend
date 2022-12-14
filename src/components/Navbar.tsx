@@ -63,7 +63,6 @@ export const Navbar: React.FC = () => {
                     borderWidth: '0 0 1px 0',
                     boxShadow: '0 0 5px 0',
                     borderColor: 'lightgray',
-                    zIndex: 201,
                 }}
                 bg="white"
                 align="center"

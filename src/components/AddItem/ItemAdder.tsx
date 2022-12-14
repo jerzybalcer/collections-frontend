@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Drawer, Stepper } from '@mantine/core';
+import { Stepper, Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 import { DefineItem } from './DefineItem';
@@ -71,19 +71,29 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
             onClose={closeAdder}
             position="right"
             padding="xl"
-            size="50vw"
+            size="xl"
+            styles={{
+                drawer: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                },
+                body: { flexGrow: 1, marginBottom: '16px' },
+            }}
         >
             <Stepper
                 active={currentStep}
                 onStepClick={setCurrentStep}
-                breakpoint="sm"
+                breakpoint="xs"
                 mt="xl"
                 size="lg"
                 h="100%"
-                sx={{
-                    '.mantine-Stepper-content': {
-                        height: '90%',
+                styles={{
+                    root: {
+                        display: 'flex',
+                        flexDirection: 'column',
                     },
+                    content: { flex: 1 },
                 }}
             >
                 <Stepper.Step

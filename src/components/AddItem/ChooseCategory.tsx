@@ -154,106 +154,118 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
             mt="xl"
             h="100%"
         >
-            {(categoriesLoading || tagsLoading) && (
-                <Loader size="lg" mt="10rem" />
-            )}
-            {categories && !categoriesLoading && tags && !tagsLoading && (
-                <Accordion
-                    variant="filled"
-                    radius="xs"
-                    defaultValue={currentMode()}
-                    onChange={(value) =>
-                        setCategoryMode((value as CategoryMode) ?? undefined)
-                    }
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Accordion.Item value="choose">
-                        <Accordion.Control
-                            icon={<IconVocabulary />}
-                            disabled={categories.length === 0}
-                        >
-                            <Title>Choose existing category</Title>
-                        </Accordion.Control>
-                        <Accordion.Panel>
-                            <Select
-                                label="Category"
-                                placeholder="Pick one"
-                                withAsterisk
-                                data={categories.map((c) => {
-                                    return {
-                                        label: c.name,
-                                        value: c.id,
-                                    };
-                                })}
-                                size="lg"
-                                value={categoryId}
-                                onChange={onChangeCategoryId}
-                                nothingFound="No categories yet!"
-                                error={
-                                    errors.chosenId
-                                        ? 'Category is required'
-                                        : ''
-                                }
-                            />
-                        </Accordion.Panel>
-                    </Accordion.Item>
-                    <Accordion.Item value="create">
-                        <Accordion.Control icon={<IconSquarePlus />}>
-                            <Title>Create new category</Title>
-                        </Accordion.Control>
-                        <Accordion.Panel>
-                            <Flex direction="column">
-                                <TextInput
-                                    placeholder="Enter name"
-                                    label="Category name"
+            <Flex
+                direction="column"
+                sx={{ flexGrow: 1, overflowY: 'auto', height: '100px' }}
+            >
+                {(categoriesLoading || tagsLoading) && (
+                    <Loader size="lg" mt="10rem" />
+                )}
+                {categories && !categoriesLoading && tags && !tagsLoading && (
+                    <Accordion
+                        variant="filled"
+                        radius="xs"
+                        mah="10%"
+                        defaultValue={currentMode()}
+                        onChange={(value) =>
+                            setCategoryMode(
+                                (value as CategoryMode) ?? undefined,
+                            )
+                        }
+                        sx={{ flexGrow: 1 }}
+                    >
+                        <Accordion.Item value="choose">
+                            <Accordion.Control
+                                icon={<IconVocabulary />}
+                                disabled={categories.length === 0}
+                            >
+                                <Title>Choose existing category</Title>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                                <Select
+                                    label="Category"
+                                    placeholder="Pick one"
                                     withAsterisk
+                                    data={categories.map((c) => {
+                                        return {
+                                            label: c.name,
+                                            value: c.id,
+                                        };
+                                    })}
                                     size="lg"
-                                    mb="lg"
-                                    onChange={onChangeCategoryName}
-                                    value={newCategory.name ?? ''}
+                                    value={categoryId}
+                                    onChange={onChangeCategoryId}
+                                    nothingFound="No categories yet!"
                                     error={
-                                        errors.name ? 'Name is required' : ''
-                                    }
-                                />
-                                <ColorInput
-                                    placeholder="Pick color"
-                                    label="Color"
-                                    withAsterisk
-                                    size="lg"
-                                    mb="lg"
-                                    onChange={onChangeColor}
-                                    value={newCategory.color ?? undefined}
-                                    error={
-                                        errors.color ? 'Color is required' : ''
-                                    }
-                                />
-                                <MultiSelect
-                                    data={tags}
-                                    nothingFound="Type something to start adding"
-                                    label="Tags"
-                                    placeholder="Pick at least one"
-                                    size="lg"
-                                    mb="lg"
-                                    searchable
-                                    withAsterisk
-                                    creatable
-                                    getCreateLabel={(query) =>
-                                        `+ Create ${query}`
-                                    }
-                                    onCreate={onCreateTag}
-                                    onChange={onChangeTags}
-                                    value={newCategory.tags}
-                                    error={
-                                        errors.tags
-                                            ? 'At least one tag is required'
+                                        errors.chosenId
+                                            ? 'Category is required'
                                             : ''
                                     }
                                 />
-                            </Flex>
-                        </Accordion.Panel>
-                    </Accordion.Item>
-                </Accordion>
-            )}
+                            </Accordion.Panel>
+                        </Accordion.Item>
+                        <Accordion.Item value="create">
+                            <Accordion.Control icon={<IconSquarePlus />}>
+                                <Title>Create new category</Title>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                                <Flex direction="column">
+                                    <TextInput
+                                        placeholder="Enter name"
+                                        label="Category name"
+                                        withAsterisk
+                                        size="lg"
+                                        mb="lg"
+                                        onChange={onChangeCategoryName}
+                                        value={newCategory.name ?? ''}
+                                        error={
+                                            errors.name
+                                                ? 'Name is required'
+                                                : ''
+                                        }
+                                    />
+                                    <ColorInput
+                                        placeholder="Pick color"
+                                        label="Color"
+                                        withAsterisk
+                                        size="lg"
+                                        mb="lg"
+                                        onChange={onChangeColor}
+                                        value={newCategory.color ?? undefined}
+                                        error={
+                                            errors.color
+                                                ? 'Color is required'
+                                                : ''
+                                        }
+                                    />
+                                    <MultiSelect
+                                        data={tags}
+                                        nothingFound="Type something to start adding"
+                                        label="Tags"
+                                        placeholder="Pick at least one"
+                                        size="lg"
+                                        mb="lg"
+                                        searchable
+                                        withAsterisk
+                                        creatable
+                                        getCreateLabel={(query) =>
+                                            `+ Create ${query}`
+                                        }
+                                        onCreate={onCreateTag}
+                                        onChange={onChangeTags}
+                                        value={newCategory.tags}
+                                        error={
+                                            errors.tags
+                                                ? 'At least one tag is required'
+                                                : ''
+                                        }
+                                    />
+                                </Flex>
+                            </Accordion.Panel>
+                        </Accordion.Item>
+                    </Accordion>
+                )}
+            </Flex>
             <Group position="right" my="xl">
                 <Button variant="default" onClick={() => {}} disabled size="lg">
                     Back

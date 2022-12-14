@@ -92,11 +92,14 @@ export const DefineItem: React.FC<DefineItemProps> = ({
 
     return (
         <Flex direction="column" mt="xl" h="100%">
-            <Flex mb="xl" align="center" gap="xs">
-                <IconPencilPlus />
-                <Title>Define item</Title>
-            </Flex>
-            <ScrollArea sx={{ flexGrow: 1 }} px="sm">
+            <Flex
+                direction="column"
+                sx={{ flexGrow: 1, overflowY: 'auto', height: '100px' }}
+            >
+                <Flex mb="xl" align="center" gap="xs">
+                    <IconPencilPlus />
+                    <Title>Define item</Title>
+                </Flex>
                 <TextInput
                     name="name"
                     placeholder="Enter name"
@@ -149,7 +152,8 @@ export const DefineItem: React.FC<DefineItemProps> = ({
                     checked={itemInfo.isFavourite ?? false}
                     onChange={onChangeIsFavourite}
                 />
-            </ScrollArea>
+            </Flex>
+
             <Group position="right" my="xl">
                 <Button variant="default" onClick={prevStep} size="lg">
                     Back
