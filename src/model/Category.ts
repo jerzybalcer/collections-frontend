@@ -20,3 +20,16 @@ export interface FullItemCategory {
     color: string;
     tags: string[];
 }
+
+export interface FullCategory {
+    name: string;
+    color: string;
+    tags: string[];
+    canBeDeleted: boolean;
+}
+
+export interface EditedCategory {
+    name: string | null;
+    color: string | null;
+    tags: string[];
+}
