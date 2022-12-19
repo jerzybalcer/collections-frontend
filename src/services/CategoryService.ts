@@ -1,4 +1,9 @@
-import { EditedCategory, FullCategory, SimpleCategory } from '../model';
+import {
+    EditedCategory,
+    FullCategory,
+    NewCategory,
+    SimpleCategory,
+} from '../model';
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -31,6 +36,18 @@ export const editCategory = async (
     fetch(`${baseUrl}/category/${categoryId}`, {
         method: 'PUT',
         body: JSON.stringify(editedCategory),
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        },
+    });
+
+export const addCategory = async (
+    newCategory: NewCategory,
+): Promise<Response> =>
+    fetch(`${baseUrl}/category`, {
+        method: 'POST',
+        body: JSON.stringify(newCategory),
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',

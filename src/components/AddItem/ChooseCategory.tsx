@@ -13,9 +13,10 @@ import {
 } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { IconSquarePlus, IconVocabulary } from '@tabler/icons';
-import { AddItemContext, CategoryMode, NewCategory } from '../../context';
+import { AddItemContext, CategoryMode } from '../../context';
 import { areRecordsEqual, isUnique } from '../../helpers';
 import { getCategories, getTags } from '../../services';
+import { NewCategory } from '../../model';
 
 interface ChooseCategoryProps {
     nextStep: () => void;

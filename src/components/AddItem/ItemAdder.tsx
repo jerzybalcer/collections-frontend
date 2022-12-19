@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Stepper, Drawer } from '@mantine/core';
+import { Stepper, Drawer, Flex, Title, CloseButton } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 import { DefineItem } from './DefineItem';
@@ -72,15 +72,27 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
             position="right"
             padding="xl"
             size="xl"
+            withCloseButton={false}
             styles={{
                 drawer: {
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
                 },
-                body: { flexGrow: 1, marginBottom: '16px' },
+                body: { flexGrow: 1, marginBottom: '64px' },
             }}
         >
+            <Flex justify="space-between" mb="lg" align="center">
+                <Title order={2} color="blue">
+                    Create Item
+                </Title>
+                <CloseButton
+                    color="blue"
+                    size="xl"
+                    ml="auto"
+                    onClick={() => setIsOpen(false)}
+                />
+            </Flex>
             <Stepper
                 active={currentStep}
                 onStepClick={setCurrentStep}

@@ -33,3 +33,9 @@ export interface EditedCategory {
     color: string | null;
     tags: string[];
 }
+
+export interface NewCategory {
+    name: string;
+    color: string;
+    tags: string[];
+}

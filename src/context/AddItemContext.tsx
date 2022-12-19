@@ -1,5 +1,5 @@
 import React, { useMemo, useState, createContext } from 'react';
-import { TagValue } from '../model';
+import { NewCategory, TagValue } from '../model';
 
 interface ItemInfo {
     name: string;
@@ -7,12 +7,6 @@ interface ItemInfo {
     acquiredDate: string;
     isFavourite: boolean;
     imageBase64: string | null;
-}
-
-export interface NewCategory {
-    name: string;
-    color: string;
-    tags: string[];
 }
 
 export type CategoryMode = 'choose' | 'create' | undefined;
