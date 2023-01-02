@@ -27,16 +27,16 @@ export const ItemImage: React.FC<ItemImageProps> = ({ imageUrl }) => {
                     align="center"
                     style={{
                         objectFit: 'cover',
-                        width: '400px',
-                        height: '400px',
+                        width: '300px',
+                        height: '300px',
                     }}
                     onClick={() => showFullSizeImage(!imageLoading)}
                 >
                     <img
                         src={imageUrl}
                         alt=""
-                        width={400}
-                        height={400}
+                        width={300}
+                        height={300}
                         style={{
                             borderRadius: '10px',
                             objectFit: 'cover',

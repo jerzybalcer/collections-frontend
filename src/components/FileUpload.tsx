@@ -40,11 +40,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                 )}
             </Flex>
             {file && (
-                <Image
-                    src={URL.createObjectURL(file)}
-                    radius="md"
-                    width={300}
-                />
+                <Flex w={300} h={300} sx={{ overflow: 'auto' }}>
+                    <Image src={URL.createObjectURL(file)} radius="md" />
+                </Flex>
             )}
             {!file && (
                 <Box h="100%">

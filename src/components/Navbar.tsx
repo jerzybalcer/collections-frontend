@@ -79,17 +79,7 @@ export const Navbar: React.FC = () => {
                 </Title>
 
                 {windowWidth > 800 ? (
-                    <>
-                        {pagesButtons('row')}
-                        <Flex align="center">
-                            <Button variant="subtle" size="xl">
-                                <IconUserCircle size={40} strokeWidth={1.5} />
-                                <Text size="xl" ml="xs">
-                                    Test User
-                                </Text>
-                            </Button>
-                        </Flex>
-                    </>
+                    <>{pagesButtons('row')}</>
                 ) : (
                     <ActionIcon
                         mr="xs"
