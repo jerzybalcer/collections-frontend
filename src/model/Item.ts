@@ -12,6 +12,7 @@ export interface SimpleItem {
     acquiredDate: string;
     isFavourite: boolean;
     category: SimplestCategory;
+    tags: string[];
 }
 
 export interface FullItem {
