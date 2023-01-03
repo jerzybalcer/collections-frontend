@@ -91,13 +91,14 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
         <ScrollArea h="75%" w="100%">
             <Flex direction="column" w="100%" h="100%" pt="lg">
                 {items && tags && !tagsLoading && (
-                    <Flex gap="sm">
+                    <Flex wrap="wrap">
                         <TextInput
                             name="search"
                             placeholder="Search"
                             size="lg"
                             mb="lg"
-                            maw={300}
+                            mr="sm"
+                            w={300}
                             onChange={onChangeSearchPhrase}
                             icon={<IconSearch />}
                         />
@@ -109,6 +110,8 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
                             label=""
                             size="lg"
                             mb="lg"
+                            mr="sm"
+                            w={300}
                             searchable
                             onChange={onChangeFilters}
                         />
