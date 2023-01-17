@@ -21,6 +21,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { showNotification } from '@mantine/notifications';
+import { AxiosResponse } from 'axios';
 import {
     deleteCategory,
     editCategory,
@@ -28,7 +29,7 @@ import {
     getTags,
 } from '../services';
 import { CategoryDetails } from '../components/CategoryDetails';
-import { EditedCategory } from '../model';
+import { EditedCategory, FullCategory } from '../model';
 
 export const CategoryDetailsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -40,48 +41,52 @@ export const CategoryDetailsPage: React.FC = () => {
         {} as EditedCategory,
     );
 
+    const fetchCategoryDetails = async (): Promise<FullCategory> => {
+        return getCategoryDetails(id as string).then(
+            (res: AxiosResponse) => res.data,
+        );
+    };
+
     const {
         data: categoryDetails,
         isLoading: categoryDetailsLoading,
         refetch: refetchCategorDetails,
-    } = useQuery(`category-details-${id}`, () =>
-        getCategoryDetails(id as string),
-    );
+    } = useQuery(`category-details-${id}`, fetchCategoryDetails);
+
+    const fetchTags = async (): Promise<string[]> => {
+        return getTags().then((res: AxiosResponse) => res.data);
+    };
 
     const { data: allTags, isLoading: allTagsLoading } = useQuery(
         `tags`,
-        getTags,
+        fetchTags,
     );
 
     const deleteCategoryHandler = async (): Promise<void> => {
-        deleteCategory(id as string).then((response) => {
-            if (response.ok) {
-                showNotification({
-                    title: 'Success!',
-                    message: 'Category deleted',
-                    color: 'teal',
-                    icon: <IconCheck size={16} />,
-                });
+        deleteCategory(id as string).then(() => {
+            showNotification({
+                title: 'Success!',
+                message: 'Category deleted',
+                color: 'teal',
+                icon: <IconCheck size={16} />,
+            });
 
-                navigate('/categories');
-            }
+            navigate('/categories');
 
             showDeleteModal(false);
         });
     };
 
     const saveEditedCategory = (savedCategory: EditedCategory) => {
-        editCategory(id as string, savedCategory).then((response) => {
-            if (response.ok) {
-                showNotification({
-                    title: 'Success!',
-                    message: 'Category edited successfully',
-                    color: 'teal',
-                    icon: <IconCheck size={16} />,
-                });
-                setEditing(false);
-                refetchCategorDetails();
-            }
+        editCategory(id as string, savedCategory).then(() => {
+            showNotification({
+                title: 'Success!',
+                message: 'Category edited successfully',
+                color: 'teal',
+                icon: <IconCheck size={16} />,
+            });
+            setEditing(false);
+            refetchCategorDetails();
         });
     };
 

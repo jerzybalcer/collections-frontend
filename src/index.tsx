@@ -5,6 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { BrowserRouter } from 'react-router-dom';
 import { AddItemContextProvider, EditItemContextProvider } from './context';
+import { AxiosInterceptorProvider } from './services';
 import App from './App';
 
 const root = ReactDOM.createRoot(
@@ -19,11 +20,13 @@ root.render(
             <NotificationsProvider>
                 <QueryClientProvider client={queryClient}>
                     <BrowserRouter>
-                        <AddItemContextProvider>
-                            <EditItemContextProvider>
-                                <App />
-                            </EditItemContextProvider>
-                        </AddItemContextProvider>
+                        <AxiosInterceptorProvider>
+                            <AddItemContextProvider>
+                                <EditItemContextProvider>
+                                    <App />
+                                </EditItemContextProvider>
+                            </AddItemContextProvider>
+                        </AxiosInterceptorProvider>
                     </BrowserRouter>
                 </QueryClientProvider>
             </NotificationsProvider>

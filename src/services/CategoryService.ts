@@ -1,55 +1,44 @@
-import {
-    EditedCategory,
-    FullCategory,
-    NewCategory,
-    SimpleCategory,
-} from '../model';
+import { AxiosResponse } from 'axios';
+import { apiClient } from './AxiosInstance';
+import { EditedCategory, NewCategory } from '../model';
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
-
-export const getCategories = async (): Promise<SimpleCategory[]> =>
-    fetch(`${baseUrl}/categories`).then((response) => response.json());
+export const getCategories = async (): Promise<AxiosResponse> =>
+    apiClient
+        .get(`/categories`)
+        .catch((err: AxiosResponse) => Promise.reject(err));
 
 export const getTagsForCategory = async (
     categoryId: string,
-): Promise<string[]> =>
-    fetch(`${baseUrl}/category/${categoryId}/tags`).then((response) =>
-        response.json(),
-    );
+): Promise<AxiosResponse> =>
+    apiClient
+        .get(`/category/${categoryId}/tags`)
+        .catch((err: AxiosResponse) => Promise.reject(err));
 
 export const getCategoryDetails = async (
     categoryId: string,
-): Promise<FullCategory> =>
-    fetch(`${baseUrl}/category/${categoryId}`).then((response) =>
-        response.json(),
-    );
+): Promise<AxiosResponse> =>
+    apiClient
+        .get(`/category/${categoryId}`)
+        .catch((err: AxiosResponse) => Promise.reject(err));
 
-export const deleteCategory = async (categoryId: string): Promise<Response> =>
-    fetch(`${baseUrl}/category/${categoryId}`, {
-        method: 'DELETE',
-    });
+export const deleteCategory = async (
+    categoryId: string,
+): Promise<AxiosResponse> =>
+    apiClient
+        .delete(`/category/${categoryId}`)
+        .catch((err: AxiosResponse) => Promise.reject(err));
 
 export const editCategory = async (
     categoryId: string,
     editedCategory: EditedCategory,
-): Promise<Response> =>
-    fetch(`${baseUrl}/category/${categoryId}`, {
-        method: 'PUT',
-        body: JSON.stringify(editedCategory),
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-    });
+): Promise<AxiosResponse> =>
+    apiClient
+        .put(`/category/${categoryId}`, editedCategory)
+        .catch((err: AxiosResponse) => Promise.reject(err));
 
 export const addCategory = async (
     newCategory: NewCategory,
-): Promise<Response> =>
-    fetch(`${baseUrl}/category`, {
-        method: 'POST',
-        body: JSON.stringify(newCategory),
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-    });
+): Promise<AxiosResponse> =>
+    apiClient
+        .post(`/category`, newCategory)
+        .catch((err: AxiosResponse) => Promise.reject(err));

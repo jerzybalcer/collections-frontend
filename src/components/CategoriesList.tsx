@@ -3,7 +3,6 @@ import { Flex, Text, Card, ScrollArea, TextInput } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { IconSearch } from '@tabler/icons';
 import { SimpleCategory } from '../model';
-import { CategoryBadge } from './CategoryBadge';
 
 interface CategoriesListProps {
     categories: SimpleCategory[];

@@ -5,7 +5,6 @@ import {
     Textarea,
     Checkbox,
     Title,
-    ScrollArea,
     Group,
     Button,
 } from '@mantine/core';

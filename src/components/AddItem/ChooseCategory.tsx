@@ -13,10 +13,11 @@ import {
 } from '@mantine/core';
 import { useQuery } from 'react-query';
 import { IconSquarePlus, IconVocabulary } from '@tabler/icons';
+import { AxiosResponse } from 'axios';
 import { AddItemContext, CategoryMode } from '../../context';
 import { areRecordsEqual, isUnique } from '../../helpers';
 import { getCategories, getTags } from '../../services';
-import { NewCategory } from '../../model';
+import { NewCategory, SimpleCategory } from '../../model';
 
 interface ChooseCategoryProps {
     nextStep: () => void;
@@ -32,17 +33,25 @@ export const ChooseCategory: React.FC<ChooseCategoryProps> = ({ nextStep }) => {
         setCategoryMode,
     } = useContext(AddItemContext);
 
+    const fetchCategories = async (): Promise<SimpleCategory[]> => {
+        return getCategories().then((res: AxiosResponse) => res.data);
+    };
+
     const { data: categories, isLoading: categoriesLoading } = useQuery(
         `categories`,
-        getCategories,
+        fetchCategories,
     );
 
     const [errors, setErrors] = useState<Record<string, boolean>>({});
     const [tags, setTags] = useState<string[]>([]);
 
+    const fetchTags = async (): Promise<string[]> => {
+        return getTags().then((res: AxiosResponse) => res.data);
+    };
+
     const { data: fetchedTags, isLoading: tagsLoading } = useQuery(
         `tags`,
-        getTags,
+        fetchTags,
     );
 
     const currentMode = (): CategoryMode => {

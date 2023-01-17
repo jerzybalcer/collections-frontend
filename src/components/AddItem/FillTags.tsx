@@ -1,15 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import {
-    Flex,
-    TextInput,
-    Loader,
-    ScrollArea,
-    Title,
-    Group,
-    Button,
-} from '@mantine/core';
+import { Flex, TextInput, Loader, Title, Group, Button } from '@mantine/core';
 import { IconListDetails } from '@tabler/icons';
+import { AxiosResponse } from 'axios';
 import { AddItemContext } from '../../context';
 import { areRecordsEqual } from '../../helpers';
 import { getTagsForCategory } from '../../services';
@@ -30,9 +23,15 @@ export const FillTags: React.FC<FillTagsProps> = ({
 
     const [errors, setErrors] = useState<Record<string, boolean>>({});
 
+    const fetchTagsForCategory = async (): Promise<string[]> => {
+        return getTagsForCategory(categoryId as string).then(
+            (res: AxiosResponse) => res.data,
+        );
+    };
+
     const { data: fetchedTags, isLoading: tagsLoading } = useQuery(
         `tags-for-category`,
-        () => getTagsForCategory(categoryId as string),
+        fetchTagsForCategory,
         { enabled: !!categoryId },
     );
 

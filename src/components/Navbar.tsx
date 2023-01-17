@@ -5,11 +5,10 @@ import {
     CloseButton,
     Drawer,
     Flex,
-    Text,
     Title,
 } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { IconMenu2, IconUserCircle } from '@tabler/icons';
+import { IconMenu2 } from '@tabler/icons';
 
 export const Navbar: React.FC = () => {
     const navigate = useNavigate();

@@ -16,6 +16,7 @@ import {
     IconUserPlus,
 } from '@tabler/icons';
 import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import { SimpleItem } from '../model';
 import { CategoryBadge } from './CategoryBadge';
 import { FavouriteButton } from './FavouriteButton';
@@ -33,10 +34,8 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
     const navigate = useNavigate();
 
     const toggleIsFavourite = (itemId: string) => {
-        toggleItemIsFavourite(itemId).then((response) => {
-            if (response.ok) {
-                refetchItems();
-            }
+        toggleItemIsFavourite(itemId).then(() => {
+            refetchItems();
         });
     };
 
@@ -44,7 +43,11 @@ export const UserItemsList: React.FC<UserItemsListProps> = ({
     const [filters, setFilters] = useState<string[]>([]);
     const [searchPhrase, setSearchPhrase] = useState<string>('');
 
-    const { data: tags, isLoading: tagsLoading } = useQuery(`tags`, getTags);
+    const fetchTags = async (): Promise<string[]> => {
+        return getTags().then((res: AxiosResponse) => res.data);
+    };
+
+    const { data: tags, isLoading: tagsLoading } = useQuery(`tags`, fetchTags);
 
     const onChangeSearchPhrase = (
         event: React.ChangeEvent<HTMLInputElement>,

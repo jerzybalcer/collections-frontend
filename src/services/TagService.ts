@@ -1,4 +1,5 @@
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+import { AxiosResponse } from 'axios';
+import { apiClient } from './AxiosInstance';
 
-export const getTags = async (): Promise<string[]> =>
-    fetch(`${baseUrl}/tags`).then((response) => response.json());
+export const getTags = async (): Promise<AxiosResponse> =>
+    apiClient.get(`/tags`).catch((err: AxiosResponse) => Promise.reject(err));

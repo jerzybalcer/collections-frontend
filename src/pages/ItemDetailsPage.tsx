@@ -19,6 +19,7 @@ import {
     IconTrash,
     IconX,
 } from '@tabler/icons';
+import { AxiosResponse } from 'axios';
 import { FavouriteButton, ItemInfo, ItemTagsList } from '../components';
 import {
     getItemDetails,
@@ -27,6 +28,7 @@ import {
     editItem,
 } from '../services';
 import { EditItemContext } from '../context';
+import { FullItem } from '../model';
 
 export const ItemDetails: React.FC = () => {
     const [deleteModalVisible, showDeleteModal] = useState<boolean>(false);
@@ -38,34 +40,36 @@ export const ItemDetails: React.FC = () => {
     const { reset, name, description, acquiredDate, imageBase64, tagValues } =
         useContext(EditItemContext);
 
+    const fetchItemDetails = async (): Promise<FullItem> => {
+        return getItemDetails(id as string).then(
+            (res: AxiosResponse) => res.data,
+        );
+    };
+
     const {
         data: itemDetails,
         isLoading: itemDetailsLoading,
         refetch: refetchItemDetails,
-    } = useQuery(`item-details-${id}`, () => getItemDetails(id as string));
+    } = useQuery(`item-details-${id}`, fetchItemDetails);
 
     const deleteItemHandler = async (): Promise<void> => {
-        deleteItem(id as string).then((response) => {
-            if (response.ok) {
-                showNotification({
-                    title: 'Success!',
-                    message: 'Item deleted from collection',
-                    color: 'teal',
-                    icon: <IconCheck size={16} />,
-                });
+        deleteItem(id as string).then(() => {
+            showNotification({
+                title: 'Success!',
+                message: 'Item deleted from collection',
+                color: 'teal',
+                icon: <IconCheck size={16} />,
+            });
 
-                navigate('/');
-            }
+            navigate('/');
 
             showDeleteModal(false);
         });
     };
 
     const toggleIsFavourite = () => {
-        toggleItemIsFavourite(id as string).then((response) => {
-            if (response.ok) {
-                refetchItemDetails();
-            }
+        toggleItemIsFavourite(id as string).then(() => {
+            refetchItemDetails();
         });
     };
 
@@ -76,18 +80,16 @@ export const ItemDetails: React.FC = () => {
             acquiredDate: acquiredDate ?? null,
             imageBase64: imageBase64 ?? null,
             tags: tagValues,
-        }).then((response) => {
-            if (response.ok) {
-                showNotification({
-                    title: 'Success!',
-                    message: 'Item edited successfully',
-                    color: 'teal',
-                    icon: <IconCheck size={16} />,
-                });
-                setEditing(false);
-                reset();
-                refetchItemDetails();
-            }
+        }).then(() => {
+            showNotification({
+                title: 'Success!',
+                message: 'Item edited successfully',
+                color: 'teal',
+                icon: <IconCheck size={16} />,
+            });
+            setEditing(false);
+            reset();
+            refetchItemDetails();
         });
     };
 
