@@ -50,18 +50,18 @@ export const ItemAdder: React.FC<ItemAdderProps> = ({
                 name: newCategory.name,
                 color: newCategory.color,
             },
-        }).then(() => {
-            showNotification({
-                title: 'Success!',
-                message: 'Item added to your collection',
-                color: 'teal',
-                icon: <IconCheck size={16} />,
-            });
-            closeAdder();
-            refetchItems();
-        });
-
-        setIsCreating(false);
+        })
+            .then(() => {
+                showNotification({
+                    title: 'Success!',
+                    message: 'Item added to your collection',
+                    color: 'teal',
+                    icon: <IconCheck size={16} />,
+                });
+                closeAdder();
+                refetchItems();
+            })
+            .catch(() => setIsCreating(false));
     };
 
     return (

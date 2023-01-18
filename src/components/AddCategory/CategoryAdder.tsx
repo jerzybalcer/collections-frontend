@@ -86,18 +86,20 @@ export const CategoryAdder: React.FC<CategoryAdderProps> = ({
             name: newCategory.name,
             color: newCategory.color,
             tags: newCategory.tags,
-        }).then(() => {
-            setIsCreating(false);
+        })
+            .then(() => {
+                setIsCreating(false);
 
-            showNotification({
-                title: 'Success!',
-                message: 'Category added',
-                color: 'teal',
-                icon: <IconCheck size={16} />,
-            });
-            setIsOpen(false);
-            refetchCategories();
-        });
+                showNotification({
+                    title: 'Success!',
+                    message: 'Category added',
+                    color: 'teal',
+                    icon: <IconCheck size={16} />,
+                });
+                setIsOpen(false);
+                refetchCategories();
+            })
+            .catch(() => setIsCreating(false));
     };
 
     const onCreate = () => {
